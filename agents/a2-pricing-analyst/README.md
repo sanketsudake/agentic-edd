@@ -1,15 +1,10 @@
-# A2 `pricing-analyst`
+# A2 pricing-analyst
 
-Role: commercial materials pricing analyst (source document, Agent 2).
-Responsibility: map each BOM line to a price book SKU, convert the unit when needed and say how, copy the unit cost, compute the line total and the material total. List the lines that no SKU fits.
-Must not: change a quantity without a stated conversion, or invent a price.
+Matches each material to a price book item, converts units when needed, and computes line totals and the material total.
+Must not invent a price.
 
-Input: `{{pricebook}}` — the price book items as JSON; `{{bom}}` — A1's `bom` array as JSON.
-Output: JSON that matches `schemas/a2-pricing.json`.
-
-Evaluation evidence: `prompts/v*.md`, `promptfooconfig.yaml`, `eval-script.js`, `ITERATION_LOG.md`, `results-v*.html`.
-The `arithmetic` assertion is the harness guardrail G9 (`harness/financials.js`, `verifyPricing`).
-
-```bash
-npm run eval -- a2-pricing-analyst v1
-```
+- Input: `{{pricebook}}`, `{{bom}}`
+- Output: `schemas/a2-pricing.json`
+- Final prompt: `prompts/v1.md`, 12/12. One round.
+- The arithmetic assertion is the same check the pipeline runs on every call (G9).
+- Run: `npm run eval -- a2-pricing-analyst v1`

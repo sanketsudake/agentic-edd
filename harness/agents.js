@@ -3,9 +3,7 @@ const path = require('node:path');
 const AGENT_DIR = path.join(__dirname, '..', 'agents');
 const prompt = (dir, version) => path.join(AGENT_DIR, dir, 'prompts', `${version}.md`);
 
-// wf-v1: the development runs of 2026-09-10 (prompt defects found and fixed).
-// wf-v2: A1 v4 on Kimi K3; campaign stopped after 9 runs when the A1 v5 eval came in (see workflow/ITERATION_LOG.md).
-// wf-v3: the pinned set below, used for the full campaign.
+// wf-v1: development runs. wf-v2: A1 v4 on Kimi K3, stopped early. wf-v3: the pinned set below (see workflow/ITERATION_LOG.md).
 const WORKFLOW_VERSION = 'wf-v3';
 
 // promptVersion and model are pinned after each agent's promptfoo eval.

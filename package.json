@@ -2,7 +2,7 @@
   "name": "agentic-edd",
   "version": "0.1.0",
   "private": true,
-  "description": "Automated bidding and estimating pipeline of evaluated Devin prompts",
+  "description": "Bid pipeline: a construction RFP in, a priced and reviewed proposal out, from five evaluated prompts with code-enforced math and guardrails",
   "scripts": {
     "test": "node --test \"test/**/*.test.js\"",
     "eval": "bash scripts/eval-agent.sh",

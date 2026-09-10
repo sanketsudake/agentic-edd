@@ -10,7 +10,7 @@
 
 const { spawnSync } = require('child_process');
 const path = require('path');
-// Empty Devin config: keeps the user's global rules out of every evaluated prompt.
+// Empty Devin config so the evaluated prompt is the only instruction the model sees.
 const DEVIN_CONFIG = path.join(__dirname, '..', 'harness', 'devin-config.json');
 
 const prompt = process.argv[2];

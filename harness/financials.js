@@ -3,7 +3,7 @@ const C = require('./constants');
 const roundMoney = (x) => Math.round(x * 100) / 100;
 const near = (a, b, tol) => Math.abs(a - b) <= tol + 1e-9;
 
-// The formula from the source document, computed by the harness and never by an agent.
+// The bid formula, computed by the harness and never by an agent.
 function computeFinancials({ total_material_cost, contingency_rate = C.CONTINGENCY_DEFAULT }) {
   const materials = roundMoney(total_material_cost);
   const labor = roundMoney(materials * C.LABOR_RATE);
