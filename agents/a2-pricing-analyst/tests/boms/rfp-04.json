@@ -1,0 +1,7 @@
+[
+  { "category": "concrete", "description": "3,500 PSI concrete, slab and thickened edge", "quantity": 52, "unit": "cu_yd", "source": "derived", "basis": "40 x 60 x 0.5 ft / 27 + 200 ft x 1 x 1 / 27" },
+  { "category": "reinforcement", "description": "#4 rebar on an 18-inch grid", "quantity": 3300, "unit": "linear_ft", "source": "derived", "basis": "grid over 40 x 60 ft" },
+  { "category": "concrete", "description": "compacted crushed stone base, 4 in", "quantity": 30, "unit": "cu_yd", "source": "derived", "basis": "2400 sq ft x 4/12 ft / 27" },
+  { "category": "concrete", "description": "10-mil poly vapor barrier", "quantity": 2400, "unit": "sq_ft", "source": "derived", "basis": "40 x 60 ft" },
+  { "category": "concrete", "description": "edge formwork", "quantity": 200, "unit": "linear_ft", "source": "derived", "basis": "perimeter" }
+]

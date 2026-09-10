@@ -1,0 +1,94 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: A4 proposal-writer — five-section client proposal with every figure copied from the financials
+prompts:
+  - file://prompts/v2.md
+providers:
+  - id: 'exec: node ../../providers/devin.js'
+    label: Devin SWE-1.6
+    config:
+      model: swe-1-6
+      cleanJson: true
+  - id: 'exec: node ../../providers/devin.js'
+    label: Kimi K3
+    config:
+      model: kimi-k3-low
+      cleanJson: true
+defaultTest:
+  options:
+    rubricPrompt: file://../../graders/llm_rubric_prompt.json
+    provider:
+      id: 'exec: node ../../providers/devin.js'
+      config:
+        model: swe-1-6
+  assert:
+    - type: is-json
+    - type: javascript
+      value: file://eval-script.js:validateSchema
+    - type: javascript
+      value: file://eval-script.js:figuresMatch
+    - type: javascript
+      value: file://eval-script.js:sectionsInOrder
+    - type: javascript
+      value: file://eval-script.js:dollarsGrounded
+    - type: javascript
+      value: file://eval-script.js:finalBidPrinted
+    - type: javascript
+      value: file://eval-script.js:validityAndSignature
+    - type: javascript
+      value: file://eval-script.js:noPromise
+tests:
+  - description: rfp-03 masonry wall
+    vars:
+      inputs: file://tests/inputs/rfp-03.json
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return d.proposal_markdown.includes('Supply Yard LLC') && d.exclusions.length === 3;
+      - type: llm-rubric
+        value: The tone is authoritative, transparent, and ready to send to a commercial client; the exclusions fit a masonry wall project
+        threshold: 0.7
+  - description: rfp-02 flat roof
+    vars:
+      inputs: file://tests/inputs/rfp-02.json
+    assert:
+      - type: javascript
+        value: JSON.parse(output).proposal_markdown.includes('Bayline Logistics')
+  - description: rfp-04 concrete slab
+    vars:
+      inputs: file://tests/inputs/rfp-04.json
+    assert:
+      - type: llm-rubric
+        value: The exclusions fit a concrete slab project (for example permit fees, subsurface rock excavation, or soil remediation), not a roofing project
+        threshold: 0.7
+  - description: 'rfp-01 dental fit-out with a 45-day requirement: no completion promise'
+    vars:
+      inputs: file://tests/inputs/rfp-01.json
+    assert:
+      - type: javascript
+        value: JSON.parse(output).proposal_markdown.includes('Northside Dental Partners')
+  - description: rfp-12 small repair
+    vars:
+      inputs: file://tests/inputs/rfp-12.json
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return d.figures.final_bid === 4760;
+  - description: 'rfp-03 wrong finding: a finding that asks to change a figure is ignored, the figures stay'
+    vars:
+      inputs: file://tests/inputs/rfp-03-wrong-finding.json
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return d.figures.overhead === 5440.8 && d.proposal_markdown.includes('$5,440.80') && !d.proposal_markdown.includes('2,040.30');
+  - description: 'rfp-03 revise loop: the two findings are corrected'
+    vars:
+      inputs: file://tests/inputs/rfp-03-revise.json
+    assert:
+      - type: javascript
+        value: |
+          const md = JSON.parse(output).proposal_markdown;
+          return !md.includes('46,000') && !/10 days/i.test(md);
+outputPath: results.html

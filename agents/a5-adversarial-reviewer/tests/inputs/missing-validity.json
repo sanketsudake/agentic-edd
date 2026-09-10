@@ -1,0 +1,80 @@
+{
+  "proposal": {
+    "proposal_markdown": "## Project Overview\n\nSupply Yard LLC has asked for a reinforced masonry security wall around its supply yard: 400 linear feet long and 8 feet high, built from standard 8x8x16 concrete masonry units with #5 vertical rebar every 32 inches, solid grout in every reinforced cell, and a smooth concrete cap. The wall is delivered in a raw block finish with no paint or stucco.\n\n## Scope of Work & Materials\n\n| Material | Quantity | Unit | Unit Cost | Line Total |\n| --- | --- | --- | --- | --- |\n| 8x8x16 concrete masonry units (CMU) | 3600 | each | $3.20 | $11,520.00 |\n| #5 rebar, vertical every 32 inches | 1200 | linear_ft | $1.10 | $1,320.00 |\n| solid grout fill for reinforced cells | 13 | cu_yd | $190.00 | $2,470.00 |\n| smooth concrete cap | 400 | linear_ft | $14.00 | $5,600.00 |\n| mortar | 3200 | sq_ft | $0.55 | $1,760.00 |\n\n## Project Investment\n\n- Materials: $22,670.00\n- Labor: $13,602.00\n- Overhead: $5,440.80\n- Contingency: $3,627.20\n- **Final Bid Price: $45,340.00**\n\n## Assumptions & Exclusions\n\n- Permit fees and inspection fees are excluded.\n- Subsurface rock excavation and unsuitable soil removal are excluded.\n- Footing design by a licensed engineer is excluded and assumed to be provided by the owner.\n\n",
+    "figures": {
+      "materials": 22670,
+      "labor": 13602,
+      "overhead": 5440.8,
+      "contingency": 3627.2,
+      "final_bid": 45340
+    },
+    "exclusions": [
+      "Permit fees and inspection fees excluded",
+      "Subsurface rock excavation excluded",
+      "Footing design by a licensed engineer excluded"
+    ]
+  },
+  "scope": {
+    "scope_summary": "Build a 400 linear ft, 8 ft high CMU security wall around a supply yard. Reinforced with #5 rebar every 32 in, grouted cells, and a smooth concrete cap.",
+    "special_requirements": [
+      "#5 rebar every 32 inches vertically",
+      "solid grout fill for all reinforced cells",
+      "no painting or stucco"
+    ]
+  },
+  "lines": [
+    {
+      "description": "8x8x16 concrete masonry units (CMU)",
+      "sku": "CMU-8",
+      "quantity": 3600,
+      "unit": "each",
+      "unit_cost": 3.2,
+      "line_total": 11520,
+      "conversion": null
+    },
+    {
+      "description": "#5 rebar, vertical every 32 inches",
+      "sku": "RB-5",
+      "quantity": 1200,
+      "unit": "linear_ft",
+      "unit_cost": 1.1,
+      "line_total": 1320,
+      "conversion": null
+    },
+    {
+      "description": "solid grout fill for reinforced cells",
+      "sku": "GR-FILL",
+      "quantity": 13,
+      "unit": "cu_yd",
+      "unit_cost": 190,
+      "line_total": 2470,
+      "conversion": null
+    },
+    {
+      "description": "smooth concrete cap",
+      "sku": "CAP-CONC",
+      "quantity": 400,
+      "unit": "linear_ft",
+      "unit_cost": 14,
+      "line_total": 5600,
+      "conversion": null
+    },
+    {
+      "description": "mortar",
+      "sku": "MORTAR",
+      "quantity": 3200,
+      "unit": "sq_ft",
+      "unit_cost": 0.55,
+      "line_total": 1760,
+      "conversion": null
+    }
+  ],
+  "financials": {
+    "materials": 22670,
+    "labor": 13602,
+    "overhead": 5440.8,
+    "contingency": 3627.2,
+    "final_bid": 45340
+  },
+  "rfp": "Looking for a bid to construct a masonry security wall around our supply yard. The wall needs to be 400 linear feet long and 8 feet high. Please use standard 8x8x16 concrete masonry units (CMU). It needs to be reinforced with #5 rebar every 32 inches vertically, with a solid grout fill for all reinforced cells. Finish it with a standard smooth concrete cap on top. No painting or stucco is required, just the raw block finish."
+}

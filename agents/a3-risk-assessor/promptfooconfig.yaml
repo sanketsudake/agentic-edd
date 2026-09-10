@@ -1,0 +1,103 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: A3 risk-assessor — risk factors with evidence, contingency rate in the band, flags
+prompts:
+  - file://prompts/v2.md
+providers:
+  - id: 'exec: node ../../providers/devin.js'
+    label: Devin SWE-1.6
+    config:
+      model: swe-1-6
+      cleanJson: true
+  - id: 'exec: node ../../providers/devin.js'
+    label: Kimi K3
+    config:
+      model: kimi-k3-low
+      cleanJson: true
+defaultTest:
+  options:
+    rubricPrompt: file://../../graders/llm_rubric_prompt.json
+    provider:
+      id: 'exec: node ../../providers/devin.js'
+      config:
+        model: swe-1-6
+  assert:
+    - type: is-json
+    - type: javascript
+      value: file://eval-script.js:validateSchema
+    - type: javascript
+      value: file://eval-script.js:evidenceGrounded
+tests:
+  - description: 'rfp-01: 45-day window is a schedule constraint'
+    vars:
+      scope: file://tests/scopes/rfp-01.json
+      rfp: file://../../fixtures/rfps/rfp-01.md
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return d.flags.includes('schedule_constraint') && !d.flags.includes('hazardous_material') && !d.flags.includes('legal_clause');
+  - description: 'rfp-02: weekend-only work is an access constraint; rate above the floor'
+    vars:
+      scope: file://tests/scopes/rfp-02.json
+      rfp: file://../../fixtures/rfps/rfp-02.md
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return (d.flags.includes('access_constraint') || d.flags.includes('schedule_constraint')) && d.contingency_rate > 0.10;
+      - type: llm-rubric
+        value: One risk factor is about the two-weekend schedule and quotes the RFP
+        threshold: 0.7
+  - description: 'rfp-03: plain wall, no punch-out flags'
+    vars:
+      scope: file://tests/scopes/rfp-03.json
+      rfp: file://../../fixtures/rfps/rfp-03.md
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return !d.flags.includes('hazardous_material') && !d.flags.includes('legal_clause') && d.contingency_rate <= 0.15;
+  - description: 'rfp-04: prepped subgrade, low risk'
+    vars:
+      scope: file://tests/scopes/rfp-04.json
+      rfp: file://../../fixtures/rfps/rfp-04.md
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return d.flags.length === 0 && d.contingency_rate <= 0.15;
+  - description: 'rfp-06: asbestos is hazardous material'
+    vars:
+      scope: file://tests/scopes/rfp-06.json
+      rfp: file://../../fixtures/rfps/rfp-06.md
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return d.flags.includes('hazardous_material') && d.risk_factors.some(f => f.severity === 'high');
+  - description: 'rfp-11: liquidated damages and indemnity are a legal clause'
+    vars:
+      scope: file://tests/scopes/rfp-11.json
+      rfp: file://../../fixtures/rfps/rfp-11.md
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return d.flags.includes('legal_clause') && d.contingency_rate >= 0.15;
+  - description: 'rfp-05: no dimensions is unclear scope'
+    vars:
+      scope: file://tests/scopes/rfp-05.json
+      rfp: file://../../fixtures/rfps/rfp-05.md
+    assert:
+      - type: javascript
+        value: JSON.parse(output).flags.includes('unclear_scope')
+  - description: 'rfp-12: small repair, minimum contingency'
+    vars:
+      scope: file://tests/scopes/rfp-12.json
+      rfp: file://../../fixtures/rfps/rfp-12.md
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return d.flags.length === 0 && d.contingency_rate === 0.10;
+outputPath: results.html

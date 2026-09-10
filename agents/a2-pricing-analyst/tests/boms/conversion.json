@@ -1,0 +1,4 @@
+[
+  { "category": "drywall", "description": "5/8 in drywall sheets, 4x8", "quantity": 100, "unit": "each", "source": "derived", "basis": "3200 sq ft / 32 sq ft per sheet" },
+  { "category": "masonry", "description": "smooth concrete cap", "quantity": 400, "unit": "linear_ft", "source": "stated", "basis": "400 linear feet" }
+]

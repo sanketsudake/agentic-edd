@@ -1,0 +1,11 @@
+[
+  { "category": "framing", "description": "2x4 metal studs, 10 ft", "quantity": 240, "unit": "each", "source": "derived", "basis": "320 ft of partitions at 16 in on center" },
+  { "category": "framing", "description": "metal track, top and bottom", "quantity": 640, "unit": "linear_ft", "source": "derived", "basis": "320 ft x 2" },
+  { "category": "insulation", "description": "soundproof fiberglass insulation in treatment room walls", "quantity": 1600, "unit": "sq_ft", "source": "derived", "basis": "160 ft of treatment room walls x 10 ft" },
+  { "category": "drywall", "description": "5/8 in drywall, both sides", "quantity": 6400, "unit": "sq_ft", "source": "derived", "basis": "320 ft x 10 ft x 2 sides" },
+  { "category": "drywall", "description": "taped and finished to Level 4", "quantity": 6400, "unit": "sq_ft", "source": "derived", "basis": "same as drywall area" },
+  { "category": "ceiling", "description": "2x2 drop ceiling grid", "quantity": 2500, "unit": "sq_ft", "source": "stated", "basis": "throughout the entire 2,500 sq ft space" },
+  { "category": "ceiling", "description": "2x2 acoustic ceiling tiles", "quantity": 2500, "unit": "sq_ft", "source": "stated", "basis": "throughout the entire 2,500 sq ft space" },
+  { "category": "plumbing", "description": "ADA-compliant restroom fixtures", "quantity": 1, "unit": "each", "source": "stated", "basis": "one ADA-compliant restroom" },
+  { "category": "doors", "description": "interior doors", "quantity": 6, "unit": "each", "source": "derived", "basis": "4 treatment rooms, reception, restroom" }
+]

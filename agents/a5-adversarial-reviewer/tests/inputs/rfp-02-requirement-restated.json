@@ -1,0 +1,79 @@
+{
+  "proposal": {
+    "proposal_markdown": "## Project Overview\n\nBayline Logistics has asked for a full replacement of the 10,000 sq ft flat warehouse roof: tear-off and disposal of the old EPDM membrane, 3 inches of rigid polyiso insulation board, and a new fully adhered 60-mil white TPO membrane, with aluminum edge flashing and 4 new cast-iron roof drains. As the RFP requires, the work is scheduled over two weekends so that warehouse operations are not disrupted.\n\n## Scope of Work & Materials\n\n| Material | Quantity | Unit | Unit Cost | Line Total |\n| --- | --- | --- | --- | --- |\n| tear-off and disposal of old EPDM membrane | 10000 | sq_ft | $1.25 | $12,500.00 |\n| 3 in rigid polyiso insulation board | 10000 | sq_ft | $2.20 | $22,000.00 |\n| 60-mil white TPO membrane, fully adhered | 10000 | sq_ft | $4.50 | $45,000.00 |\n| aluminum edge flashing | 400 | linear_ft | $9.00 | $3,600.00 |\n| cast-iron roof drains | 4 | each | $650.00 | $2,600.00 |\n\n## Project Investment\n\n- Materials: $85,700.00\n- Labor: $51,420.00\n- Overhead: $20,568.00\n- Contingency: $20,568.00\n- **Final Bid Price: $178,256.00**\n\n## Assumptions & Exclusions\n\n- Permit fees and inspection fees are excluded.\n- Repair of deteriorated roof decking found after tear-off is excluded.\n- Hazardous material handling or abatement is excluded.\n\n## Validity & Acceptance\n\nThis bid is valid for 30 days from the date of issue. Acceptance of this proposal authorizes the work described above.\n\nAuthorized signature: ______________________   Date: ____________\n",
+    "figures": {
+      "materials": 85700,
+      "labor": 51420,
+      "overhead": 20568,
+      "contingency": 20568,
+      "final_bid": 178256
+    },
+    "exclusions": [
+      "Permit fees and inspection fees excluded",
+      "Repair of deteriorated roof decking excluded",
+      "Hazardous material handling excluded"
+    ]
+  },
+  "scope": {
+    "scope_summary": "Replace a 10,000 sq ft flat warehouse roof: tear off the EPDM membrane, install 3 in polyiso and a fully adhered 60-mil TPO membrane. Includes aluminum edge flashing and 4 new cast-iron drains.",
+    "special_requirements": [
+      "complete tear-off and disposal of the old EPDM",
+      "work only over two weekends to avoid disrupting warehouse operations"
+    ]
+  },
+  "lines": [
+    {
+      "description": "tear-off and disposal of old EPDM membrane",
+      "sku": "RF-TEAR",
+      "quantity": 10000,
+      "unit": "sq_ft",
+      "unit_cost": 1.25,
+      "line_total": 12500,
+      "conversion": null
+    },
+    {
+      "description": "3 in rigid polyiso insulation board",
+      "sku": "RF-ISO3",
+      "quantity": 10000,
+      "unit": "sq_ft",
+      "unit_cost": 2.2,
+      "line_total": 22000,
+      "conversion": null
+    },
+    {
+      "description": "60-mil white TPO membrane, fully adhered",
+      "sku": "RF-TPO60",
+      "quantity": 10000,
+      "unit": "sq_ft",
+      "unit_cost": 4.5,
+      "line_total": 45000,
+      "conversion": null
+    },
+    {
+      "description": "aluminum edge flashing",
+      "sku": "RF-FLASH",
+      "quantity": 400,
+      "unit": "linear_ft",
+      "unit_cost": 9,
+      "line_total": 3600,
+      "conversion": null
+    },
+    {
+      "description": "cast-iron roof drains",
+      "sku": "RF-DRAIN",
+      "quantity": 4,
+      "unit": "each",
+      "unit_cost": 650,
+      "line_total": 2600,
+      "conversion": null
+    }
+  ],
+  "financials": {
+    "materials": 85700,
+    "labor": 51420,
+    "overhead": 20568,
+    "contingency": 20568,
+    "final_bid": 178256
+  },
+  "rfp": "RFP for warehouse roof replacement. The existing 10,000 sq ft flat roof requires a complete tear-off and disposal of the old EPDM membrane. We need a quote to install 3 inches of rigid polyiso insulation board and top it with a new 60-mil white TPO roofing membrane, fully adhered. Please include all necessary aluminum edge flashing and the replacement of 4 standard cast-iron roof drains. Work must be completed over two weekends to avoid disrupting our warehouse operations."
+}

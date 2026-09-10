@@ -1,0 +1,67 @@
+{
+  "client": "Prefab Steel Storage Co",
+  "scope": {
+    "scope_summary": "Pour a 40 ft by 60 ft monolithic slab, 6 in thick, for a prefabricated steel storage building. Includes a 12 in thickened edge footing, 4 in of crushed stone base, and a vapor barrier.",
+    "special_requirements": [
+      "3,500 PSI concrete",
+      "#4 rebar on an 18-inch grid",
+      "12-inch thickened edge footing",
+      "subgrade is already prepped and level"
+    ]
+  },
+  "lines": [
+    {
+      "description": "3,500 PSI concrete, slab and thickened edge",
+      "sku": "CONC-3500",
+      "quantity": 52,
+      "unit": "cu_yd",
+      "unit_cost": 180,
+      "line_total": 9360,
+      "conversion": null
+    },
+    {
+      "description": "#4 rebar on an 18-inch grid",
+      "sku": "RB-4",
+      "quantity": 3300,
+      "unit": "linear_ft",
+      "unit_cost": 0.85,
+      "line_total": 2805,
+      "conversion": null
+    },
+    {
+      "description": "compacted crushed stone base, 4 in",
+      "sku": "STONE-CR",
+      "quantity": 30,
+      "unit": "cu_yd",
+      "unit_cost": 45,
+      "line_total": 1350,
+      "conversion": null
+    },
+    {
+      "description": "10-mil poly vapor barrier",
+      "sku": "VB-10",
+      "quantity": 2400,
+      "unit": "sq_ft",
+      "unit_cost": 0.25,
+      "line_total": 600,
+      "conversion": null
+    },
+    {
+      "description": "edge formwork",
+      "sku": "FORM-EDGE",
+      "quantity": 200,
+      "unit": "linear_ft",
+      "unit_cost": 3,
+      "line_total": 600,
+      "conversion": null
+    }
+  ],
+  "financials": {
+    "materials": 14715,
+    "labor": 8829,
+    "overhead": 3531.6,
+    "contingency": 2354.4,
+    "final_bid": 29430
+  },
+  "findings": []
+}

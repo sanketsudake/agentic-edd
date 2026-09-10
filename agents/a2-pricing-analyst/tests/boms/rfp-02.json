@@ -1,0 +1,7 @@
+[
+  { "category": "roofing", "description": "tear-off and disposal of old EPDM membrane", "quantity": 10000, "unit": "sq_ft", "source": "stated", "basis": "10,000 sq ft flat roof" },
+  { "category": "roofing", "description": "3 in rigid polyiso insulation board", "quantity": 10000, "unit": "sq_ft", "source": "stated", "basis": "10,000 sq ft flat roof" },
+  { "category": "roofing", "description": "60-mil white TPO membrane, fully adhered", "quantity": 10000, "unit": "sq_ft", "source": "stated", "basis": "10,000 sq ft flat roof" },
+  { "category": "roofing", "description": "aluminum edge flashing", "quantity": 400, "unit": "linear_ft", "source": "derived", "basis": "perimeter of a 100 x 100 ft roof" },
+  { "category": "roofing", "description": "cast-iron roof drains", "quantity": 4, "unit": "each", "source": "stated", "basis": "4 standard cast-iron roof drains" }
+]

@@ -1,0 +1,84 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: A2 pricing-analyst — map BOM lines to price book SKUs and compute line totals
+prompts:
+  - file://prompts/v1.md
+providers:
+  - id: 'exec: node ../../providers/devin.js'
+    label: Devin SWE-1.6
+    config:
+      model: swe-1-6
+      cleanJson: true
+  - id: 'exec: node ../../providers/devin.js'
+    label: Kimi K3
+    config:
+      model: kimi-k3-low
+      cleanJson: true
+defaultTest:
+  vars:
+    pricebook: file://../../fixtures/pricebook.json
+  options:
+    rubricPrompt: file://../../graders/llm_rubric_prompt.json
+    provider:
+      id: 'exec: node ../../providers/devin.js'
+      config:
+        model: swe-1-6
+  assert:
+    - type: is-json
+    - type: javascript
+      value: file://eval-script.js:validateSchema
+    - type: javascript
+      value: file://eval-script.js:arithmetic
+    - type: javascript
+      value: file://eval-script.js:everyLineHandled
+tests:
+  - description: 'rfp-03 wall: five SKUs, total 22,670'
+    vars:
+      bom: file://tests/boms/rfp-03.json
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          const s = d.lines.map(l => l.sku).sort().join(',');
+          return s === 'CAP-CONC,CMU-8,GR-FILL,MORTAR,RB-5' && Math.abs(d.total_material_cost - 22670) < 0.01 && d.unpriced.length === 0;
+  - description: 'rfp-02 roof: total 85,700'
+    vars:
+      bom: file://tests/boms/rfp-02.json
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return Math.abs(d.total_material_cost - 85700) < 0.01 && d.lines.some(l => l.sku === 'RF-TPO60') && d.unpriced.length === 0;
+  - description: 'rfp-04 slab: total 14,715'
+    vars:
+      bom: file://tests/boms/rfp-04.json
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return Math.abs(d.total_material_cost - 14715) < 0.01 && d.unpriced.length === 0;
+  - description: 'rfp-01 fit-out: nine lines priced'
+    vars:
+      bom: file://tests/boms/rfp-01.json
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return d.lines.length === 9 && d.unpriced.length === 0 && d.lines.some(l => l.sku === 'ADA-RR' && l.line_total === 3800);
+  - description: 'conversion: drywall sheets to sq ft, with the conversion stated'
+    vars:
+      bom: file://tests/boms/conversion.json
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          const dw = d.lines.find(l => l.sku === 'DW-58');
+          return !!dw && dw.unit === 'sq_ft' && dw.quantity === 3200 && typeof dw.conversion === 'string' && /32/.test(dw.conversion);
+  - description: 'rfp-10: copper panels and copper flashing are unpriced'
+    vars:
+      bom: file://tests/boms/rfp-10.json
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return d.unpriced.length === 2 && d.unpriced.every(u => /copper/i.test(u)) && d.lines.length === 3;
+outputPath: results.html

@@ -1,0 +1,103 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: A5 adversarial-reviewer — findings against the financials and the scope, with a verdict
+prompts:
+  - file://prompts/v4.md
+providers:
+  - id: 'exec: node ../../providers/devin.js'
+    label: Devin SWE-1.6
+    config:
+      model: swe-1-6
+      cleanJson: true
+  - id: 'exec: node ../../providers/devin.js'
+    label: Kimi K3
+    config:
+      model: kimi-k3-low
+      cleanJson: true
+defaultTest:
+  options:
+    rubricPrompt: file://../../graders/llm_rubric_prompt.json
+    provider:
+      id: 'exec: node ../../providers/devin.js'
+      config:
+        model: swe-1-6
+  assert:
+    - type: is-json
+    - type: javascript
+      value: file://eval-script.js:validateSchema
+    - type: javascript
+      value: file://eval-script.js:verdictMatchesFindings
+tests:
+  - description: 'clean proposal: APPROVE, no findings'
+    vars:
+      inputs: file://tests/inputs/clean.json
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return d.verdict === 'APPROVE' && d.findings.length === 0;
+  - description: 'wrong labor figure: REVISE with number_mismatch'
+    vars:
+      inputs: file://tests/inputs/wrong-labor.json
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return d.verdict === 'REVISE' && d.findings.some(f => f.type === 'number_mismatch' && /12,?000|13,?602/.test(f.detail));
+  - description: 'final bid off by 50 percent: ESCALATE'
+    vars:
+      inputs: file://tests/inputs/final-bid-off-50pct.json
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return d.verdict === 'ESCALATE' && d.findings.some(f => f.type === 'number_mismatch');
+  - description: 'invented paint and stucco: invented_scope'
+    vars:
+      inputs: file://tests/inputs/invented-scope.json
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return d.verdict !== 'APPROVE' && d.findings.some(f => f.type === 'invented_scope' && /paint|stucco/i.test(f.detail));
+  - description: 'missing Validity & Acceptance: missing_section'
+    vars:
+      inputs: file://tests/inputs/missing-validity.json
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return d.verdict === 'REVISE' && d.findings.some(f => f.type === 'missing_section' && /validity/i.test(f.detail));
+  - description: 'completion guarantee: promise, ESCALATE'
+    vars:
+      inputs: file://tests/inputs/promise.json
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return d.verdict === 'ESCALATE' && d.findings.some(f => f.type === 'promise');
+  - description: 'roofing exclusion on a wall job: unfit_exclusion'
+    vars:
+      inputs: file://tests/inputs/unfit-exclusion.json
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return d.verdict === 'REVISE' && d.findings.some(f => f.type === 'unfit_exclusion' && /roof/i.test(f.detail));
+  - description: 'rfp-02: the proposal restates the RFP''s own two-weekend requirement: APPROVE, no promise finding'
+    vars:
+      inputs: file://tests/inputs/rfp-02-requirement-restated.json
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return d.verdict === 'APPROVE' && !d.findings.some(f => f.type === 'promise');
+  - description: 'wrong overhead and unprofessional tone: two findings'
+    vars:
+      inputs: file://tests/inputs/two-findings.json
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          const t = d.findings.map(f => f.type);
+          return d.verdict === 'REVISE' && t.includes('number_mismatch') && t.includes('tone');
+outputPath: results.html

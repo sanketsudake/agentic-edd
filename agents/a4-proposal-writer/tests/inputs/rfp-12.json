@@ -1,0 +1,35 @@
+{
+  "client": "Bayline Logistics",
+  "scope": {
+    "scope_summary": "Replace 2 cast-iron roof drains and 120 linear ft of aluminum edge flashing on a 4,000 sq ft flat roof. No membrane or insulation work.",
+    "special_requirements": []
+  },
+  "lines": [
+    {
+      "description": "cast-iron roof drains",
+      "sku": "RF-DRAIN",
+      "quantity": 2,
+      "unit": "each",
+      "unit_cost": 650,
+      "line_total": 1300,
+      "conversion": null
+    },
+    {
+      "description": "aluminum edge flashing",
+      "sku": "RF-FLASH",
+      "quantity": 120,
+      "unit": "linear_ft",
+      "unit_cost": 9,
+      "line_total": 1080,
+      "conversion": null
+    }
+  ],
+  "findings": [],
+  "financials": {
+    "materials": 2380,
+    "labor": 1428,
+    "overhead": 571.2,
+    "contingency": 380.8,
+    "final_bid": 4760
+  }
+}

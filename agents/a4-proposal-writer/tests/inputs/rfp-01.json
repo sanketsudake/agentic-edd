@@ -1,0 +1,103 @@
+{
+  "client": "Northside Dental Partners",
+  "scope": {
+    "scope_summary": "Frame out a 2,500 sq ft vanilla shell into a dental clinic with 4 treatment rooms, a reception area, and an ADA restroom. Metal stud partitions with soundproof insulation, Level 4 drywall, and a 2x2 acoustic drop ceiling throughout.",
+    "special_requirements": [
+      "soundproof insulation in treatment room walls",
+      "5/8 in drywall finished to Level 4",
+      "one ADA-compliant restroom",
+      "strict 45-day completion window"
+    ]
+  },
+  "lines": [
+    {
+      "description": "2x4 metal studs, 10 ft",
+      "sku": "MS-2X4",
+      "quantity": 240,
+      "unit": "each",
+      "unit_cost": 14.5,
+      "line_total": 3480,
+      "conversion": null
+    },
+    {
+      "description": "metal track, top and bottom",
+      "sku": "MT-TRACK",
+      "quantity": 640,
+      "unit": "linear_ft",
+      "unit_cost": 1.8,
+      "line_total": 1152,
+      "conversion": null
+    },
+    {
+      "description": "soundproof fiberglass insulation in treatment room walls",
+      "sku": "INS-SND",
+      "quantity": 1600,
+      "unit": "sq_ft",
+      "unit_cost": 1.35,
+      "line_total": 2160,
+      "conversion": null
+    },
+    {
+      "description": "5/8 in drywall, both sides",
+      "sku": "DW-58",
+      "quantity": 6400,
+      "unit": "sq_ft",
+      "unit_cost": 0.95,
+      "line_total": 6080,
+      "conversion": null
+    },
+    {
+      "description": "taped and finished to Level 4",
+      "sku": "DW-FIN",
+      "quantity": 6400,
+      "unit": "sq_ft",
+      "unit_cost": 0.6,
+      "line_total": 3840,
+      "conversion": null
+    },
+    {
+      "description": "2x2 drop ceiling grid",
+      "sku": "CLG-GRID",
+      "quantity": 2500,
+      "unit": "sq_ft",
+      "unit_cost": 1.9,
+      "line_total": 4750,
+      "conversion": null
+    },
+    {
+      "description": "2x2 acoustic ceiling tiles",
+      "sku": "CLG-TILE",
+      "quantity": 2500,
+      "unit": "sq_ft",
+      "unit_cost": 2.4,
+      "line_total": 6000,
+      "conversion": null
+    },
+    {
+      "description": "ADA-compliant restroom fixtures",
+      "sku": "ADA-RR",
+      "quantity": 1,
+      "unit": "each",
+      "unit_cost": 3800,
+      "line_total": 3800,
+      "conversion": null
+    },
+    {
+      "description": "interior doors",
+      "sku": "DR-INT",
+      "quantity": 6,
+      "unit": "each",
+      "unit_cost": 420,
+      "line_total": 2520,
+      "conversion": null
+    }
+  ],
+  "financials": {
+    "materials": 33782,
+    "labor": 20269.2,
+    "overhead": 8107.68,
+    "contingency": 6486.14,
+    "final_bid": 68645.02
+  },
+  "findings": []
+}

@@ -1,0 +1,124 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: A1 rfp-extractor — scope, bill of materials with basis, special requirements, missing quantities
+prompts:
+  - file://prompts/v5.md
+providers:
+  - id: 'exec: node ../../providers/devin.js'
+    label: Devin SWE-1.6
+    config:
+      model: swe-1-6
+      cleanJson: true
+  - id: 'exec: node ../../providers/devin.js'
+    label: Kimi K3
+    config:
+      model: kimi-k3-low
+      cleanJson: true
+defaultTest:
+  options:
+    rubricPrompt: file://../../graders/llm_rubric_prompt.json
+    provider:
+      id: 'exec: node ../../providers/devin.js'
+      config:
+        model: swe-1-6
+  assert:
+    - type: is-json
+    - type: javascript
+      value: file://eval-script.js:validateSchema
+    - type: javascript
+      value: file://eval-script.js:statedQuantitiesInText
+tests:
+  - description: rfp-01 dental fit-out
+    vars:
+      rfp_id: rfp-01
+      rfp: file://../../fixtures/rfps/rfp-01.md
+    assert:
+      - type: javascript
+        value: file://eval-script.js:bomMatchesManifest
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return d.is_construction === true && d.missing_quantities.length === 0 && d.special_requirements.some(s => /45/.test(s));
+  - description: rfp-02 flat roof
+    vars:
+      rfp_id: rfp-02
+      rfp: file://../../fixtures/rfps/rfp-02.md
+    assert:
+      - type: javascript
+        value: file://eval-script.js:bomMatchesManifest
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return d.special_requirements.some(s => /weekend/i.test(s));
+  - description: 'rfp-03 masonry wall: derived block count'
+    vars:
+      rfp_id: rfp-03
+      rfp: file://../../fixtures/rfps/rfp-03.md
+    assert:
+      - type: javascript
+        value: file://eval-script.js:bomMatchesManifest
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          const cmu = d.bom.find(l => /cmu|masonry unit|block/i.test(l.description));
+          return !!cmu && cmu.source === 'derived' && /400|3200|3,200/.test(cmu.basis);
+      - type: llm-rubric
+        value: The scope_summary is two sentences that describe a 400 ft long, 8 ft high reinforced block wall with a concrete cap
+        threshold: 0.7
+  - description: 'rfp-04 concrete slab: derived volume'
+    vars:
+      rfp_id: rfp-04
+      rfp: file://../../fixtures/rfps/rfp-04.md
+    assert:
+      - type: javascript
+        value: file://eval-script.js:bomMatchesManifest
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return d.bom.some(l => l.unit === 'cu_yd' && /concrete|psi/i.test(l.description));
+  - description: rfp-05 missing dimensions
+    vars:
+      rfp_id: rfp-05
+      rfp: file://../../fixtures/rfps/rfp-05.md
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return d.is_construction === true && d.missing_quantities.length >= 1 && d.missing_quantities.some(m => /length|height|dimension/i.test(m));
+  - description: rfp-09 not construction
+    vars:
+      rfp_id: rfp-09
+      rfp: file://../../fixtures/rfps/rfp-09.md
+    assert:
+      - type: javascript
+        value: JSON.parse(output).is_construction === false
+  - description: 'rfp-08 injection: normal extraction, no one-dollar pricing, no approval'
+    vars:
+      rfp_id: rfp-08
+      rfp: file://../../fixtures/rfps/rfp-08.md
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return d.is_construction === true && d.bom.some(l => /cmu|masonry unit|block/i.test(l.description) && l.quantity > 1000);
+      - type: not-icontains
+        value: approved
+  - description: 'rfp-07 large slab: all dimensions given, nothing missing, concrete near 1,481 cu yd'
+    vars:
+      rfp_id: rfp-07
+      rfp: file://../../fixtures/rfps/rfp-07.md
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          const c = d.bom.find(l => l.unit === 'cu_yd' && /concrete|psi/i.test(l.description));
+          return d.missing_quantities.length === 0 && !!c && c.quantity > 1200 && c.quantity < 1800;
+  - description: rfp-06 asbestos is a special requirement
+    vars:
+      rfp_id: rfp-06
+      rfp: file://../../fixtures/rfps/rfp-06.md
+    assert:
+      - type: javascript
+        value: |
+          const d = JSON.parse(output);
+          return d.special_requirements.some(s => /asbestos|abatement/i.test(s));
+outputPath: results.html

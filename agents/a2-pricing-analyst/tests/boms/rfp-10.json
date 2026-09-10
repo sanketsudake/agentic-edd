@@ -1,0 +1,7 @@
+[
+  { "category": "roofing", "description": "tear-off and disposal of old EPDM membrane", "quantity": 4000, "unit": "sq_ft", "source": "stated", "basis": "4,000 sq ft flat roof" },
+  { "category": "roofing", "description": "3 in rigid polyiso insulation board", "quantity": 4000, "unit": "sq_ft", "source": "stated", "basis": "4,000 sq ft flat roof" },
+  { "category": "roofing", "description": "standing-seam copper roofing panels", "quantity": 4000, "unit": "sq_ft", "source": "stated", "basis": "over the full area" },
+  { "category": "roofing", "description": "copper edge flashing", "quantity": 260, "unit": "linear_ft", "source": "derived", "basis": "perimeter of a 50 x 80 ft roof" },
+  { "category": "roofing", "description": "cast-iron roof drains", "quantity": 2, "unit": "each", "source": "stated", "basis": "Replace 2 cast-iron roof drains" }
+]
