@@ -8,10 +8,15 @@
     "eval": "bash scripts/eval-agent.sh",
     "validate": "bash scripts/validate-agents.sh",
     "run": "node harness/run.js",
-    "trace": "node harness/trace.js"
+    "trace": "node harness/trace.js",
+    "format": "prettier --write \"**/*.{js,yaml}\"",
+    "format:check": "prettier --check \"**/*.{js,yaml}\""
   },
   "dependencies": {
     "ajv": "^8.20.0",
     "promptfoo": "^0.121.17"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.6"
   }
 }

@@ -19,7 +19,9 @@ module.exports.verdictMatchesFindings = (output) => {
 module.exports.findingTypes = (expected) => (output) => {
   const types = JSON.parse(output).findings.map((f) => f.type);
   const missing = expected.filter((t) => !types.includes(t));
-  return missing.length === 0 ? true : `missing finding types: ${missing.join(', ')} (got ${types.join(', ') || 'none'})`;
+  return missing.length === 0
+    ? true
+    : `missing finding types: ${missing.join(', ')} (got ${types.join(', ') || 'none'})`;
 };
 
 module.exports = wrapAsserts(module.exports);

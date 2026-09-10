@@ -10,9 +10,10 @@ function parseInput(argv) {
     const { id, client, rfp_text } = loadRfp(argv[1]);
     return { id, client, rfp_text };
   }
-  if (!argv[0]) throw new Error('usage: node harness/run.js \'<json>\' | --rfp <id>');
+  if (!argv[0]) throw new Error("usage: node harness/run.js '<json>' | --rfp <id>");
   const input = JSON.parse(argv[0]);
-  for (const k of ['client', 'rfp_text']) if (typeof input[k] !== 'string') throw new Error(`input.${k} must be a string`);
+  for (const k of ['client', 'rfp_text'])
+    if (typeof input[k] !== 'string') throw new Error(`input.${k} must be a string`);
   return input;
 }
 
@@ -24,10 +25,12 @@ try {
   process.exit(1);
 }
 
-runWorkflow(input).then((r) => {
-  console.log(JSON.stringify(r));
-  process.exit(r.status.startsWith('FAILED') ? 2 : 0);
-}).catch((err) => {
-  console.error(err.stack || err.message);
-  process.exit(2);
-});
+runWorkflow(input)
+  .then((r) => {
+    console.log(JSON.stringify(r));
+    process.exit(r.status.startsWith('FAILED') ? 2 : 0);
+  })
+  .catch((err) => {
+    console.error(err.stack || err.message);
+    process.exit(2);
+  });

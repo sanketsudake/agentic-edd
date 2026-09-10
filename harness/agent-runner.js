@@ -16,23 +16,66 @@ async function runAgent({ agent, vars, run, parents = [], attemptMax = 3 }) {
   const prompt = render(template, vars);
   const stepId = `${agent.id}#${run.nextStep()}`;
   const fileStem = stepId.replace('#', '-');
-  const base = { step_id: stepId, agent: agent.id, prompt_version: agent.promptVersion, parent_step_ids: parents, engine: 'devin', model: agent.model };
+  const base = {
+    step_id: stepId,
+    agent: agent.id,
+    prompt_version: agent.promptVersion,
+    parent_step_ids: parents,
+    engine: 'devin',
+    model: agent.model,
+  };
 
   if (agent.override) {
-    run.audit.event('step_start', { ...base, prompt_sha256: sha256(prompt), prompt_chars: prompt.length, override: true });
-    run.audit.event('step_result', { ...base, attempt: 1, model_name: 'override', prompt_tokens: 0, completion_tokens: 0, cached_tokens: 0, cost_usd: 0, price_table_date: null, duration_ms: 0, status: 'OK', problem: null, output_sha256: sha256(JSON.stringify(agent.override)), output_path: null, export_path: null });
-    run.audit.event('guardrail', { id: 'G1', step_id: stepId, attempt: 1, result: 'PASS', detail: null });
+    run.audit.event('step_start', {
+      ...base,
+      prompt_sha256: sha256(prompt),
+      prompt_chars: prompt.length,
+      override: true,
+    });
+    run.audit.event('step_result', {
+      ...base,
+      attempt: 1,
+      model_name: 'override',
+      prompt_tokens: 0,
+      completion_tokens: 0,
+      cached_tokens: 0,
+      cost_usd: 0,
+      price_table_date: null,
+      duration_ms: 0,
+      status: 'OK',
+      problem: null,
+      output_sha256: sha256(JSON.stringify(agent.override)),
+      output_path: null,
+      export_path: null,
+    });
+    run.audit.event('guardrail', {
+      id: 'G1',
+      step_id: stepId,
+      attempt: 1,
+      result: 'PASS',
+      detail: null,
+    });
     return { stepId, output: agent.override };
   }
 
-  run.audit.event('step_start', { ...base, prompt_sha256: sha256(prompt), prompt_chars: prompt.length });
+  run.audit.event('step_start', {
+    ...base,
+    prompt_sha256: sha256(prompt),
+    prompt_chars: prompt.length,
+  });
 
   let lastError;
   for (let attempt = 1; attempt <= attemptMax; attempt += 1) {
     const exportPath = path.join(run.dir, 'exports', `${fileStem}-a${attempt}.json`);
     let res;
     try {
-      res = await runDevin({ prompt, model: agent.model, exportPath, cwd: run.workDir, env: { WF_AGENT: agent.id } });
+      res = await runDevin({
+        prompt,
+        model: agent.model,
+        exportPath,
+        cwd: run.workDir,
+        env: { WF_AGENT: agent.id },
+      });
     } catch (err) {
       run.audit.event('step_error', { ...base, attempt, error: err.message });
       lastError = err;
@@ -64,23 +107,41 @@ async function runAgent({ agent, vars, run, parents = [], attemptMax = 3 }) {
     run.totals.cost_usd = Number((run.totals.cost_usd + cost.cost_usd).toFixed(6));
 
     run.audit.event('step_result', {
-      ...base, attempt, ...res.metrics, ...cost, duration_ms: res.duration_ms,
-      status: problem ? 'RETRY' : 'OK', problem,
-      output_sha256: sha256(outputText), output_path: path.relative(process.cwd(), outputPath),
+      ...base,
+      attempt,
+      ...res.metrics,
+      ...cost,
+      duration_ms: res.duration_ms,
+      status: problem ? 'RETRY' : 'OK',
+      problem,
+      output_sha256: sha256(outputText),
+      output_path: path.relative(process.cwd(), outputPath),
       export_path: path.relative(process.cwd(), exportPath),
     });
-    run.audit.event('guardrail', { id: 'G1', step_id: stepId, attempt, result: problem ? 'FAIL' : 'PASS', detail: problem });
+    run.audit.event('guardrail', {
+      id: 'G1',
+      step_id: stepId,
+      attempt,
+      result: problem ? 'FAIL' : 'PASS',
+      detail: problem,
+    });
 
     if (!problem) return { stepId, output };
     lastError = new Error(problem);
   }
 
-  const e = new Error(`agent ${agent.id} failed after ${attemptMax} attempts: ${lastError.message}`);
+  const e = new Error(
+    `agent ${agent.id} failed after ${attemptMax} attempts: ${lastError.message}`,
+  );
   const m = lastError.message;
-  e.code = lastError.code === 'DEVIN_EXIT' ? 'FAILED_CLI'
-    : /^check: math:/.test(m) ? 'FAILED_MATH'
-      : /^check:/.test(m) ? 'FAILED_GROUNDING'
-        : 'FAILED_SCHEMA';
+  e.code =
+    lastError.code === 'DEVIN_EXIT'
+      ? 'FAILED_CLI'
+      : /^check: math:/.test(m)
+        ? 'FAILED_MATH'
+        : /^check:/.test(m)
+          ? 'FAILED_GROUNDING'
+          : 'FAILED_SCHEMA';
   e.stepId = stepId;
   throw e;
 }

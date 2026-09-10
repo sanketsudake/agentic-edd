@@ -10,10 +10,15 @@ module.exports.validateSchema = (output) => {
 // Every evidence string must come from the scope or the RFP text.
 module.exports.evidenceGrounded = (output, context) => {
   const d = JSON.parse(output);
-  const scope = typeof context.vars.scope === 'string' ? context.vars.scope : JSON.stringify(context.vars.scope);
+  const scope =
+    typeof context.vars.scope === 'string'
+      ? context.vars.scope
+      : JSON.stringify(context.vars.scope);
   const source = `${scope}\n${context.vars.rfp}`.toLowerCase();
   const bad = d.risk_factors.filter((f) => !source.includes(f.evidence.toLowerCase().slice(0, 25)));
-  return bad.length === 0 ? true : `evidence not in source: ${bad.map((f) => f.evidence).join(' | ')}`;
+  return bad.length === 0
+    ? true
+    : `evidence not in source: ${bad.map((f) => f.evidence).join(' | ')}`;
 };
 
 module.exports = wrapAsserts(module.exports);

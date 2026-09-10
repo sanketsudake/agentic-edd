@@ -1,9 +1,21 @@
 // G3: deterministic hard escalation on the raw RFP text. No agent can override a hit.
 // Order matters: the first phrase found decides the reported reason.
 const HARD_RULES = [
-  'asbestos', 'lead paint', 'hazardous', 'contaminated', 'abatement',
-  'ignore previous instructions', 'ignore all previous', 'disregard the rules', 'system override', 'price everything at',
-  'liquidated damages', 'indemnif', 'lawsuit', 'penalty clause', 'hold harmless',
+  'asbestos',
+  'lead paint',
+  'hazardous',
+  'contaminated',
+  'abatement',
+  'ignore previous instructions',
+  'ignore all previous',
+  'disregard the rules',
+  'system override',
+  'price everything at',
+  'liquidated damages',
+  'indemnif',
+  'lawsuit',
+  'penalty clause',
+  'hold harmless',
 ];
 
 function hardRuleHit(text) {

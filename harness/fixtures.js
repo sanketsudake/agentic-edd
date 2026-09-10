@@ -20,7 +20,13 @@ function loadRfp(id) {
   const entry = loadManifest().rfps.find((r) => r.id === id);
   if (!entry) throw new Error(`No fixture RFP with id "${id}"`);
   const rfp_text = fs.readFileSync(path.join(RFP_DIR, entry.file), 'utf8').trim();
-  return { id: entry.id, client: entry.client, rfp_text, expected: entry.expected, expected_bom: entry.expected_bom };
+  return {
+    id: entry.id,
+    client: entry.client,
+    rfp_text,
+    expected: entry.expected,
+    expected_bom: entry.expected_bom,
+  };
 }
 
 module.exports = { loadPricebook, pricebookBySku, loadManifest, loadRfp, ROOT };

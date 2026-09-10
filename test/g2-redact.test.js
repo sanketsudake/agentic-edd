@@ -20,7 +20,11 @@ test('redact leaves clean text unchanged', () => {
 });
 
 test('redactObject redacts every string in a nested object and counts them', () => {
-  const r = redactObject({ scope_summary: 'contact a@b.io', bom: [{ description: 'key sk-abcdefghijklmnop', quantity: 3 }], special_requirements: [] });
+  const r = redactObject({
+    scope_summary: 'contact a@b.io',
+    bom: [{ description: 'key sk-abcdefghijklmnop', quantity: 3 }],
+    special_requirements: [],
+  });
   assert.equal(r.obj.scope_summary, 'contact [EMAIL]');
   assert.equal(r.obj.bom[0].description, 'key [SECRET]');
   assert.equal(r.obj.bom[0].quantity, 3);

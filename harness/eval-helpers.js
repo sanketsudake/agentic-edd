@@ -3,13 +3,20 @@
 function wrapAsserts(exportsObj) {
   const out = {};
   for (const [name, fn] of Object.entries(exportsObj)) {
-    out[name] = typeof fn !== 'function' ? fn : (output, context) => {
-      let r;
-      try { r = fn(output, context); } catch (err) { return { pass: false, score: 0, reason: `${name} threw: ${err.message}` }; }
-      if (r === true || r === null || r === undefined) return true;
-      if (typeof r === 'string') return { pass: false, score: 0, reason: r };
-      return r;
-    };
+    out[name] =
+      typeof fn !== 'function'
+        ? fn
+        : (output, context) => {
+            let r;
+            try {
+              r = fn(output, context);
+            } catch (err) {
+              return { pass: false, score: 0, reason: `${name} threw: ${err.message}` };
+            }
+            if (r === true || r === null || r === undefined) return true;
+            if (typeof r === 'string') return { pass: false, score: 0, reason: r };
+            return r;
+          };
   }
   return out;
 }

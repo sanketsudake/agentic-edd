@@ -1,0 +1,10 @@
+node_modules/
+runs/
+logs/
+docs/evidence/
+agents/*/results-*.json
+agents/*/results-*.html
+agents/*/tests/inputs/
+workflow/results.json
+workflow/results.html
+package-lock.json

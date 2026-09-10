@@ -10,13 +10,23 @@ class AuditLogger {
   }
 
   event(type, fields = {}) {
-    const record = { ts: new Date().toISOString(), seq: ++this.seq, run_id: this.runId, type, ...fields };
+    const record = {
+      ts: new Date().toISOString(),
+      seq: ++this.seq,
+      run_id: this.runId,
+      type,
+      ...fields,
+    };
     fs.appendFileSync(this.file, `${JSON.stringify(record)}\n`);
     return record;
   }
 
   static read(file) {
-    return fs.readFileSync(file, 'utf8').split('\n').filter(Boolean).map((line) => JSON.parse(line));
+    return fs
+      .readFileSync(file, 'utf8')
+      .split('\n')
+      .filter(Boolean)
+      .map((line) => JSON.parse(line));
   }
 }
 

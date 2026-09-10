@@ -52,8 +52,8 @@ if (isGraderMode) {
   let systemMsg, userMsg;
   try {
     const messages = JSON.parse(prompt);
-    const systemMessage = messages.find(m => m.role === 'system');
-    const userMessage = messages.find(m => m.role === 'user');
+    const systemMessage = messages.find((m) => m.role === 'system');
+    const userMessage = messages.find((m) => m.role === 'user');
 
     if (systemMessage && userMessage) {
       systemMsg = systemMessage.content;
@@ -63,17 +63,32 @@ if (isGraderMode) {
     }
   } catch (e) {
     // Fallback: treat the whole thing as a user message
-    systemMsg = 'You are an evaluator. Respond with only valid JSON: {"pass": bool, "score": 0.0-1.0, "reason": "string"}';
+    systemMsg =
+      'You are an evaluator. Respond with only valid JSON: {"pass": bool, "score": 0.0-1.0, "reason": "string"}';
     userMsg = prompt;
   }
 
   // Combine system and user into one prompt (Devin has no --system-prompt)
   const fullPrompt = `${systemMsg}\n\n${userMsg}`;
 
-  const result = spawnSync('devin', ['-p', '--model', model, '--respect-workspace-trust', 'false', '--config', DEVIN_CONFIG, '--', fullPrompt], {
-    encoding: 'utf8',
-    stdio: ['pipe', 'pipe', 'pipe']
-  });
+  const result = spawnSync(
+    'devin',
+    [
+      '-p',
+      '--model',
+      model,
+      '--respect-workspace-trust',
+      'false',
+      '--config',
+      DEVIN_CONFIG,
+      '--',
+      fullPrompt,
+    ],
+    {
+      encoding: 'utf8',
+      stdio: ['pipe', 'pipe', 'pipe'],
+    },
+  );
 
   if (result.error) {
     console.error(result.error.message);
@@ -114,10 +129,26 @@ if (isGraderMode) {
   }
 
   // Call devin cli with single-turn mode and specified model
-  const result = spawnSync('devin', ['-p', '--permission-mode', 'auto', '--model', model, '--respect-workspace-trust', 'false', '--config', DEVIN_CONFIG, '--', prompt], {
-    encoding: 'utf8',
-    stdio: ['pipe', 'pipe', 'pipe']
-  });
+  const result = spawnSync(
+    'devin',
+    [
+      '-p',
+      '--permission-mode',
+      'auto',
+      '--model',
+      model,
+      '--respect-workspace-trust',
+      'false',
+      '--config',
+      DEVIN_CONFIG,
+      '--',
+      prompt,
+    ],
+    {
+      encoding: 'utf8',
+      stdio: ['pipe', 'pipe', 'pipe'],
+    },
+  );
 
   if (result.error) {
     console.error(result.error.message);

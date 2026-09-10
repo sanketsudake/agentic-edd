@@ -11,5 +11,8 @@ test('extractJson strips code fences and prose', () => {
 });
 
 test('extractJson throws with code PARSE on garbage', () => {
-  assert.throws(() => extractJson('no json here'), (e) => e.code === 'PARSE');
+  assert.throws(
+    () => extractJson('no json here'),
+    (e) => e.code === 'PARSE',
+  );
 });

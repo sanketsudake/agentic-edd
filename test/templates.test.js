@@ -3,7 +3,10 @@ const assert = require('node:assert/strict');
 const { renderNeedsInfo, renderNoBid } = require('../harness/templates');
 
 test('renderNeedsInfo lists each missing quantity', () => {
-  const md = renderNeedsInfo({ client: 'Eastgate Warehousing', missing: ['wall length in linear feet', 'wall height in feet'] });
+  const md = renderNeedsInfo({
+    client: 'Eastgate Warehousing',
+    missing: ['wall length in linear feet', 'wall height in feet'],
+  });
   assert.match(md, /Eastgate Warehousing/);
   assert.match(md, /- wall length in linear feet/);
   assert.match(md, /- wall height in feet/);

@@ -23,7 +23,9 @@ module.exports.everyLineHandled = (output, context) => {
   const d = JSON.parse(output);
   const bom = asObject(context.vars.bom);
   const handled = d.lines.length + d.unpriced.length;
-  return handled === bom.length ? true : `${bom.length} input lines, ${d.lines.length} priced + ${d.unpriced.length} unpriced`;
+  return handled === bom.length
+    ? true
+    : `${bom.length} input lines, ${d.lines.length} priced + ${d.unpriced.length} unpriced`;
 };
 
 module.exports = wrapAsserts(module.exports);

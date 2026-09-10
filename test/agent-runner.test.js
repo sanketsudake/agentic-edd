@@ -11,13 +11,23 @@ const FAKE = path.join(__dirname, 'fixtures', 'fake-devin.js');
 
 function tmpRun() {
   const base = fs.mkdtempSync(path.join(os.tmpdir(), 'run-'));
-  return createRun({ runsDir: path.join(base, 'runs'), logDir: path.join(base, 'logs'), workflowVersion: 'wf-test' });
+  return createRun({
+    runsDir: path.join(base, 'runs'),
+    logDir: path.join(base, 'logs'),
+    workflowVersion: 'wf-test',
+  });
 }
 
 function a1Agent() {
   const promptFile = path.join(os.tmpdir(), `a1-prompt-${process.pid}.md`);
   fs.writeFileSync(promptFile, 'Extract: <rfp>{{ rfp }}</rfp>');
-  return { id: 'a1-rfp-extractor', promptFile, promptVersion: 'v1', schema: 'a1-extraction', model: 'swe-1-6' };
+  return {
+    id: 'a1-rfp-extractor',
+    promptFile,
+    promptVersion: 'v1',
+    schema: 'a1-extraction',
+    model: 'swe-1-6',
+  };
 }
 
 test('runAgent renders, calls devin, validates, and logs one step_result with cost', async () => {
@@ -48,8 +58,14 @@ test('runAgent retries a bad output and succeeds on the second attempt', async (
     const r = await runAgent({ agent: a1Agent(), vars: { rfp: 'x' }, run });
     assert.equal(r.output.bom[0].quantity, 3600);
     const results = AuditLogger.read(run.audit.file).filter((x) => x.type === 'step_result');
-    assert.deepEqual(results.map((x) => x.status), ['RETRY', 'OK']);
-    assert.deepEqual(results.map((x) => x.attempt), [1, 2]);
+    assert.deepEqual(
+      results.map((x) => x.status),
+      ['RETRY', 'OK'],
+    );
+    assert.deepEqual(
+      results.map((x) => x.attempt),
+      [1, 2],
+    );
   } finally {
     delete process.env.FAKE_DEVIN_BAD_ATTEMPTS;
   }
@@ -60,7 +76,10 @@ test('runAgent fails with FAILED_SCHEMA after three bad attempts', async () => {
   process.env.FAKE_DEVIN_BAD_ATTEMPTS = '3';
   try {
     const run = tmpRun();
-    await assert.rejects(runAgent({ agent: a1Agent(), vars: { rfp: 'x' }, run }), (e) => e.code === 'FAILED_SCHEMA');
+    await assert.rejects(
+      runAgent({ agent: a1Agent(), vars: { rfp: 'x' }, run }),
+      (e) => e.code === 'FAILED_SCHEMA',
+    );
   } finally {
     delete process.env.FAKE_DEVIN_BAD_ATTEMPTS;
   }
@@ -69,20 +88,33 @@ test('runAgent fails with FAILED_SCHEMA after three bad attempts', async () => {
 test('runAgent runs agent.check: FAILED_GROUNDING for a plain problem, FAILED_MATH for a math: problem', async () => {
   process.env.DEVIN_BIN = FAKE;
   const run = tmpRun();
-  const agent = { ...a1Agent(), check: (o) => (o.is_construction ? 'construction not allowed' : null) };
-  await assert.rejects(runAgent({ agent, vars: { rfp: 'x' }, run }), (e) => e.code === 'FAILED_GROUNDING');
+  const agent = {
+    ...a1Agent(),
+    check: (o) => (o.is_construction ? 'construction not allowed' : null),
+  };
+  await assert.rejects(
+    runAgent({ agent, vars: { rfp: 'x' }, run }),
+    (e) => e.code === 'FAILED_GROUNDING',
+  );
   const results = AuditLogger.read(run.audit.file).filter((x) => x.type === 'step_result');
   assert.equal(results.length, 3);
   assert.match(results[0].problem, /^check: construction not allowed/);
   const run2 = tmpRun();
   const mathAgent = { ...a1Agent(), check: () => 'math: total off' };
-  await assert.rejects(runAgent({ agent: mathAgent, vars: { rfp: 'x' }, run: run2 }), (e) => e.code === 'FAILED_MATH');
+  await assert.rejects(
+    runAgent({ agent: mathAgent, vars: { rfp: 'x' }, run: run2 }),
+    (e) => e.code === 'FAILED_MATH',
+  );
 });
 
 test('runAgent override skips devin and logs a zero-cost step', async () => {
   process.env.DEVIN_BIN = FAKE;
   const run = tmpRun();
-  const r = await runAgent({ agent: { ...a1Agent(), override: { is_construction: false } }, vars: { rfp: 'x' }, run });
+  const r = await runAgent({
+    agent: { ...a1Agent(), override: { is_construction: false } },
+    vars: { rfp: 'x' },
+    run,
+  });
   assert.deepEqual(r.output, { is_construction: false });
   assert.equal(run.totals.cost_usd, 0);
 });
@@ -92,7 +124,10 @@ test('runAgent fails with FAILED_CLI when devin exits non-zero', async () => {
   process.env.FAKE_DEVIN_EXIT = '1';
   try {
     const run = tmpRun();
-    await assert.rejects(runAgent({ agent: a1Agent(), vars: { rfp: 'x' }, run }), (e) => e.code === 'FAILED_CLI');
+    await assert.rejects(
+      runAgent({ agent: a1Agent(), vars: { rfp: 'x' }, run }),
+      (e) => e.code === 'FAILED_CLI',
+    );
   } finally {
     delete process.env.FAKE_DEVIN_EXIT;
   }

@@ -6,7 +6,9 @@ const compiled = {};
 
 function validate(schemaName, obj) {
   if (!compiled[schemaName]) {
-    compiled[schemaName] = ajv.compile(require(path.join(__dirname, '..', 'schemas', `${schemaName}.json`)));
+    compiled[schemaName] = ajv.compile(
+      require(path.join(__dirname, '..', 'schemas', `${schemaName}.json`)),
+    );
   }
   const fn = compiled[schemaName];
   const ok = fn(obj);

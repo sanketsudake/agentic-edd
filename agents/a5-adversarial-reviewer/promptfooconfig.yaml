@@ -83,7 +83,7 @@ tests:
         value: |
           const d = JSON.parse(output);
           return d.verdict === 'REVISE' && d.findings.some(f => f.type === 'unfit_exclusion' && /roof/i.test(f.detail));
-  - description: 'rfp-02: the proposal restates the RFP''s own two-weekend requirement: APPROVE, no promise finding'
+  - description: "rfp-02: the proposal restates the RFP's own two-weekend requirement: APPROVE, no promise finding"
     vars:
       inputs: file://tests/inputs/rfp-02-requirement-restated.json
     assert:

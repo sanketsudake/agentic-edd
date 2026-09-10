@@ -1,74 +1,142 @@
 #!/usr/bin/env node
-// Usage: node harness/report.js [--version wf-v1] [--dir logs/audit] [--json]
-// Success-rate and cost report over every audit log: one table per workflow version.
+// Usage: node harness/report.js [--version wf-v3] [--dir logs/audit] [--json]
+// Success rate, cost, bid spread, and punch-out precision/recall over every audit log, per workflow version.
 const fs = require('node:fs');
 const path = require('node:path');
 const { AuditLogger } = require('./audit-logger');
 const { loadManifest } = require('./fixtures');
 
+const mean = (values) => (values.length ? values.reduce((a, b) => a + b, 0) / values.length : 0);
+const pct = (n, d) => (d ? ((100 * n) / d).toFixed(1) : '0.0');
+
+function emptyStats() {
+  return {
+    runs: 0,
+    success: 0,
+    by_status: {},
+    by_route: {},
+    unexpected: [],
+    cost: [],
+    duration_ms: [],
+    bids: {},
+    tokens: 0,
+    punch: { tp: 0, fp: 0, fn: 0, tn: 0, failed: 0 },
+  };
+}
+
+// A run succeeds when its route matches the manifest. ESTIMATE in the manifest means BID at the end.
+// For an RFP that must punch out, the workflow's own decision is the punch_out event; what a human
+// decides on resume (BID, DECLINED) is not the AI's outcome.
+function judge(expected, end, punched) {
+  if (!expected) return null;
+  if (expected.route === 'ESTIMATE') return end.route === 'BID';
+  if (expected.route === 'PUNCH_OUT') return punched;
+  return end.route === expected.route;
+}
+
+function tally(stats, { start, end, records, expected }) {
+  stats.runs += 1;
+  stats.by_status[end.status] = (stats.by_status[end.status] || 0) + 1;
+  if (end.route) stats.by_route[end.route] = (stats.by_route[end.route] || 0) + 1;
+  stats.cost.push(end.cost_usd || 0);
+  stats.tokens += end.prompt_tokens || 0;
+  stats.duration_ms.push(new Date(end.ts) - new Date(start.ts));
+
+  const punched = records.some((r) => r.type === 'punch_out');
+  const ok = judge(expected, end, punched);
+  if (ok === true) stats.success += 1;
+  if (ok === false) {
+    stats.unexpected.push({
+      run: start.run_id,
+      rfp: start.rfp_id,
+      expected: expected.route,
+      got: `${end.status}/${end.route}`,
+    });
+  }
+  if (end.route === 'BID' && start.rfp_id) {
+    (stats.bids[start.rfp_id] = stats.bids[start.rfp_id] || []).push(end.final_bid);
+  }
+
+  if (!expected) return;
+  const failed = String(end.status).startsWith('FAILED') || end.status === 'HALTED';
+  if (failed) stats.punch.failed += 1;
+  else if (expected.punch_out && punched) stats.punch.tp += 1;
+  else if (expected.punch_out && !punched) stats.punch.fn += 1;
+  else if (!expected.punch_out && punched) stats.punch.fp += 1;
+  else stats.punch.tn += 1;
+}
+
 function summarize(dir) {
-  const expected = Object.fromEntries(loadManifest().rfps.map((r) => [r.id, r.expected]));
+  const expectedById = Object.fromEntries(loadManifest().rfps.map((r) => [r.id, r.expected]));
   const byVersion = {};
-  for (const f of fs.readdirSync(dir).filter((x) => x.endsWith('.jsonl')).sort()) {
-    const records = AuditLogger.read(path.join(dir, f));
+  const files = fs
+    .readdirSync(dir)
+    .filter((f) => f.endsWith('.jsonl'))
+    .sort();
+  for (const file of files) {
+    const records = AuditLogger.read(path.join(dir, file));
     const start = records.find((r) => r.type === 'run_start');
     const end = records.filter((r) => r.type === 'run_end').at(-1);
     if (!start || !end) continue;
-    const v = start.workflow_version || 'unknown';
-    const s = byVersion[v] || (byVersion[v] = { runs: 0, success: 0, by_status: {}, by_route: {}, unexpected: [], cost: [], duration_ms: [], bids: {}, tokens: 0, punch: { tp: 0, fp: 0, fn: 0, tn: 0, failed: 0 } });
-    s.runs += 1;
-    s.by_status[end.status] = (s.by_status[end.status] || 0) + 1;
-    if (end.route) s.by_route[end.route] = (s.by_route[end.route] || 0) + 1;
-    s.cost.push(end.cost_usd || 0);
-    s.tokens += end.prompt_tokens || 0;
-    s.duration_ms.push(new Date(end.ts) - new Date(start.ts));
-    const exp = expected[start.rfp_id];
-    // Success: the terminal route matches the manifest. For an RFP that must punch out, the workflow's own
-    // decision is the punch_out event; what a human decides on resume (BID, DECLINED) is not the AI's outcome.
-    const finalRoute = end.route;
-    const punched = records.some((r) => r.type === 'punch_out');
-    const ok = exp ? (exp.route === 'ESTIMATE' ? finalRoute === 'BID' : exp.route === 'PUNCH_OUT' ? punched : finalRoute === exp.route) : null;
-    if (ok === true) s.success += 1;
-    if (ok === false) s.unexpected.push({ run: start.run_id, rfp: start.rfp_id, expected: exp.route, got: `${end.status}/${finalRoute}` });
-    if (finalRoute === 'BID' && start.rfp_id) (s.bids[start.rfp_id] = s.bids[start.rfp_id] || []).push(end.final_bid);
-    // Punch-out precision and recall, failures counted apart.
-    if (exp) {
-      if (String(end.status).startsWith('FAILED') || end.status === 'HALTED') s.punch.failed += 1;
-      else if (exp.punch_out && punched) s.punch.tp += 1;
-      else if (exp.punch_out && !punched) s.punch.fn += 1;
-      else if (!exp.punch_out && punched) s.punch.fp += 1;
-      else s.punch.tn += 1;
-    }
+    const version = start.workflow_version || 'unknown';
+    const stats = byVersion[version] || (byVersion[version] = emptyStats());
+    tally(stats, { start, end, records, expected: expectedById[start.rfp_id] });
   }
   return byVersion;
 }
 
-function fmt(byVersion, only) {
-  const lines = [];
-  const mean = (a) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0);
-  for (const [v, s] of Object.entries(byVersion)) {
-    if (only && v !== only) continue;
-    lines.push(`## ${v}`, '', `| Metric | Value |`, `| --- | --- |`,
-      `| Runs (denominator, nothing excluded) | ${s.runs} |`,
-      `| Success (terminal route matches the manifest) | ${s.success} / ${s.runs} = ${s.runs ? (100 * s.success / s.runs).toFixed(1) : 0}% |`,
-      `| By status | ${Object.entries(s.by_status).map(([k, n]) => `${k} ${n}`).join(', ')} |`,
-      `| By route | ${Object.entries(s.by_route).map(([k, n]) => `${k} ${n}`).join(', ')} |`,
-      `| Mean cost per run (USD) | ${mean(s.cost).toFixed(4)} |`,
-      `| Total prompt tokens | ${s.tokens} |`,
-      `| Mean duration (s) | ${(mean(s.duration_ms) / 1000).toFixed(1)} |`, '');
-    const spread = Object.entries(s.bids).map(([id, b]) => `${id}: ${Math.min(...b)} to ${Math.max(...b)} (n=${b.length})`);
-    if (spread.length) lines.push(`Final bid spread per RFP: ${spread.join('; ')}`, '');
-    const p = s.punch; const prec = p.tp + p.fp ? p.tp / (p.tp + p.fp) : 0; const rec = p.tp + p.fn ? p.tp / (p.tp + p.fn) : 0;
-    lines.push(`Punch-out: expected and got ${p.tp}, unexpected ${p.fp}, missed ${p.fn}, correctly not punched ${p.tn}, failed runs (counted apart) ${p.failed}; precision ${(100 * prec).toFixed(1)}%, recall ${(100 * rec).toFixed(1)}%`, '');
-    if (s.unexpected.length) lines.push('Unexpected outcomes:', ...s.unexpected.map((u) => `- ${u.run} ${u.rfp}: expected ${u.expected}, got ${u.got}`), '');
+function formatVersion(version, s) {
+  const p = s.punch;
+  const lines = [
+    `## ${version}`,
+    '',
+    '| Metric | Value |',
+    '| --- | --- |',
+    `| Runs (denominator, nothing excluded) | ${s.runs} |`,
+    `| Success (terminal route matches the manifest) | ${s.success} / ${s.runs} = ${pct(s.success, s.runs)}% |`,
+    `| By status | ${Object.entries(s.by_status)
+      .map(([k, n]) => `${k} ${n}`)
+      .join(', ')} |`,
+    `| By route | ${Object.entries(s.by_route)
+      .map(([k, n]) => `${k} ${n}`)
+      .join(', ')} |`,
+    `| Mean cost per run (USD) | ${mean(s.cost).toFixed(4)} |`,
+    `| Total prompt tokens | ${s.tokens} |`,
+    `| Mean duration (s) | ${(mean(s.duration_ms) / 1000).toFixed(1)} |`,
+    '',
+  ];
+  const spread = Object.entries(s.bids).map(
+    ([id, b]) => `${id}: ${Math.min(...b)} to ${Math.max(...b)} (n=${b.length})`,
+  );
+  if (spread.length) lines.push(`Final bid spread per RFP: ${spread.join('; ')}`, '');
+  lines.push(
+    `Punch-out: expected and got ${p.tp}, unexpected ${p.fp}, missed ${p.fn}, ` +
+      `correctly not punched ${p.tn}, failed runs (counted apart) ${p.failed}; ` +
+      `precision ${pct(p.tp, p.tp + p.fp)}%, recall ${pct(p.tp, p.tp + p.fn)}%`,
+    '',
+  );
+  if (s.unexpected.length) {
+    lines.push('Unexpected outcomes:');
+    for (const u of s.unexpected)
+      lines.push(`- ${u.run} ${u.rfp}: expected ${u.expected}, got ${u.got}`);
+    lines.push('');
   }
   return lines.join('\n');
 }
 
+function fmt(byVersion, only) {
+  return Object.entries(byVersion)
+    .filter(([version]) => !only || version === only)
+    .map(([version, stats]) => formatVersion(version, stats))
+    .join('\n');
+}
+
 if (require.main === module) {
   const args = process.argv.slice(2);
-  const dir = args.includes('--dir') ? args[args.indexOf('--dir') + 1] : path.join('logs', 'audit');
-  const only = args.includes('--version') ? args[args.indexOf('--version') + 1] : null;
+  const argAfter = (flag, fallback) =>
+    args.includes(flag) ? args[args.indexOf(flag) + 1] : fallback;
+  const dir = argAfter('--dir', path.join('logs', 'audit'));
+  const only = argAfter('--version', null);
   const data = summarize(dir);
   console.log(args.includes('--json') ? JSON.stringify(data, null, 2) : fmt(data, only));
 }
