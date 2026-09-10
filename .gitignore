@@ -1,0 +1,14 @@
+# dependencies
+node_modules/
+
+# per-run artifacts (samples are copied into docs/evidence/)
+logs/
+runs/
+
+# promptfoo scratch output (the kept reports are results-v*.html and results-v*.json)
+results.html
+*.log
+
+# build artifacts
+*.zip
+.DS_Store

@@ -1,0 +1,17 @@
+{
+  "name": "agentic-edd",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Automated bidding and estimating pipeline of evaluated Devin prompts",
+  "scripts": {
+    "test": "node --test \"test/**/*.test.js\"",
+    "eval": "bash scripts/eval-agent.sh",
+    "validate": "bash scripts/validate-agents.sh",
+    "run": "node harness/run.js",
+    "trace": "node harness/trace.js"
+  },
+  "dependencies": {
+    "ajv": "^8.20.0",
+    "promptfoo": "^0.121.17"
+  }
+}
