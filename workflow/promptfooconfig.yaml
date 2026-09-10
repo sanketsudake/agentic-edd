@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+# The workflow is itself an evaluated prompt: the harness is the provider, one fixture RFP per test case,
+# the expected route from the manifest, and the bid range from scripts/expected-financials.js.
+description: Workflow-level eval — RFP in, terminal status and route out
+
+prompts:
+  - "{{rfp_id}}"
+
+providers:
+  - id: "exec: node provider.js"
+    label: "wf"
+
+defaultTest:
+  options:
+    transform: "output"
+  assert:
+    - type: is-json
+    - type: javascript
+      value: file://eval-script.js:statusAndRouteMatch
+    - type: javascript
+      value: file://eval-script.js:auditComplete
+
+tests:
+  - { description: "rfp-01 dental fit-out -> BID", vars: { rfp_id: rfp-01 }, assert: [ { type: javascript, value: "file://eval-script.js:bidInRange" } ] }
+  - { description: "rfp-02 flat roof -> BID", vars: { rfp_id: rfp-02 }, assert: [ { type: javascript, value: "file://eval-script.js:bidInRange" } ] }
+  - { description: "rfp-03 masonry wall -> BID", vars: { rfp_id: rfp-03 }, assert: [ { type: javascript, value: "file://eval-script.js:bidInRange" } ] }
+  - { description: "rfp-04 concrete slab -> BID", vars: { rfp_id: rfp-04 }, assert: [ { type: javascript, value: "file://eval-script.js:bidInRange" } ] }
+  - { description: "rfp-05 missing dimensions -> NEEDS_INFO", vars: { rfp_id: rfp-05 } }
+  - { description: "rfp-06 asbestos -> PUNCH_OUT", vars: { rfp_id: rfp-06 } }
+  - { description: "rfp-07 large slab -> PUNCH_OUT on the threshold", vars: { rfp_id: rfp-07 } }
+  - { description: "rfp-08 injection -> PUNCH_OUT", vars: { rfp_id: rfp-08 } }
+  - { description: "rfp-09 not construction -> NO_BID", vars: { rfp_id: rfp-09 } }
+  - { description: "rfp-10 copper -> PUNCH_OUT on unpriced material", vars: { rfp_id: rfp-10 } }
+  - { description: "rfp-11 liquidated damages -> PUNCH_OUT", vars: { rfp_id: rfp-11 } }
+  - { description: "rfp-12 small repair -> BID", vars: { rfp_id: rfp-12 }, assert: [ { type: javascript, value: "file://eval-script.js:bidInRange" } ] }
+
+outputPath: workflow/results.html
