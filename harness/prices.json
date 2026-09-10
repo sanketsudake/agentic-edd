@@ -1,0 +1,28 @@
+{
+  "date": "2026-09-10",
+  "source": "devin models list",
+  "unit": "usd per 1M tokens",
+  "note": "Keyed by the model_name that the Devin export reports. Cached input is priced at cached_input; the rest of prompt_tokens at input.",
+  "models": {
+    "SWE-1.6": {
+      "input": 0.5,
+      "cached_input": 0.2,
+      "output": 2.5
+    },
+    "Kimi K3 Low": {
+      "input": 3.0,
+      "cached_input": 0.3,
+      "output": 15.0
+    },
+    "Claude Haiku 4.5": {
+      "input": 1.0,
+      "cached_input": 0.1,
+      "output": 5.0
+    },
+    "DeepSeek V4 Flash Low": {
+      "input": 0.14,
+      "cached_input": 0.03,
+      "output": 0.28
+    }
+  }
+}

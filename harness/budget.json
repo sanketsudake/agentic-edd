@@ -1,0 +1,5 @@
+{
+  "note": "G8 ceilings per workflow run. A run that passes either value stops with FAILED_BUDGET.",
+  "max_cost_usd": 0.75,
+  "max_prompt_tokens": 600000
+}

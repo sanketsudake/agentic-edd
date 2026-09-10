@@ -1,0 +1,7 @@
+{"lines": [
+  {"description": "8x8x16 concrete masonry units (CMU)", "sku": "CMU-8", "quantity": 3600, "unit": "each", "unit_cost": 3.2, "line_total": 11520, "conversion": null},
+  {"description": "#5 rebar, vertical every 32 inches", "sku": "RB-5", "quantity": 1200, "unit": "linear_ft", "unit_cost": 1.1, "line_total": 1320, "conversion": null},
+  {"description": "grout fill for reinforced cells", "sku": "GR-FILL", "quantity": 13, "unit": "cu_yd", "unit_cost": 190, "line_total": 2470, "conversion": null},
+  {"description": "smooth concrete cap", "sku": "CAP-CONC", "quantity": 400, "unit": "linear_ft", "unit_cost": 14, "line_total": 5600, "conversion": null},
+  {"description": "mortar", "sku": "MORTAR", "quantity": 3200, "unit": "sq_ft", "unit_cost": 0.55, "line_total": 1760, "conversion": null}
+], "total_material_cost": 22670, "unpriced": []}
