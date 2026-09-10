@@ -1,0 +1,1 @@
+Our 6,000 sq ft flat roof needs a full replacement. The existing built-up roof was installed in 1978 and a survey found asbestos in the felt layers, so the tear-off must be handled as abatement. After removal we want 3 inches of polyiso insulation board and a 60-mil white TPO membrane, fully adhered, with new aluminum edge flashing and 2 cast-iron roof drains.

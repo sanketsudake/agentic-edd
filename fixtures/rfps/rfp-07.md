@@ -1,0 +1,1 @@
+Estimate requested for a monolithic concrete slab for a new distribution warehouse. The slab is 200 ft by 400 ft, 6 inches thick, 3,500 PSI concrete, reinforced with #4 rebar on an 18-inch grid, with a 12-inch thickened edge footing around the full perimeter. Include 4 inches of compacted crushed stone base and a 10-mil poly vapor barrier. Subgrade is prepped.

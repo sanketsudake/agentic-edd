@@ -1,0 +1,1 @@
+RFP for a 4,000 sq ft flat roof replacement on our office annex. Tear off and dispose of the old EPDM membrane, install 3 inches of rigid polyiso insulation board, then install standing-seam copper roofing panels over the full area with matching copper edge flashing. Replace 2 cast-iron roof drains.

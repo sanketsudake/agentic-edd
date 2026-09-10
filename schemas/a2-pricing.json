@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["lines", "total_material_cost", "unpriced"],
+  "properties": {
+    "lines": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["description", "sku", "quantity", "unit", "unit_cost", "line_total", "conversion"],
+        "properties": {
+          "description": { "type": "string", "minLength": 1 },
+          "sku": { "type": "string", "minLength": 1 },
+          "quantity": { "type": "number", "minimum": 0 },
+          "unit": { "enum": ["sq_ft", "linear_ft", "cu_yd", "each"] },
+          "unit_cost": { "type": "number", "minimum": 0 },
+          "line_total": { "type": "number", "minimum": 0 },
+          "conversion": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "total_material_cost": { "type": "number", "minimum": 0 },
+    "unpriced": { "type": "array", "items": { "type": "string" } }
+  }
+}

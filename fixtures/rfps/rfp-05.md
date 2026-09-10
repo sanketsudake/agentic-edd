@@ -1,0 +1,1 @@
+We want a CMU block wall with a smooth concrete cap around the back lot of our warehouse, the same kind of block and rebar as the wall you built at our front entrance last year. Please send a bid as soon as you can.

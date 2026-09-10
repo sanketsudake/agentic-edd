@@ -1,0 +1,31 @@
+{
+  "currency": "USD",
+  "date": "2026-09-10",
+  "note": "Synthetic price book. Every unit cost is invented.",
+  "items": [
+    { "sku": "MS-2X4", "description": "2x4 metal stud, 20 gauge, 10 ft", "category": "framing", "unit": "each", "unit_cost": 14.50, "aliases": ["metal stud", "2x4 metal studs", "steel stud"] },
+    { "sku": "MT-TRACK", "description": "Metal track for 2x4 studs", "category": "framing", "unit": "linear_ft", "unit_cost": 1.80, "aliases": ["metal track", "top and bottom track"] },
+    { "sku": "DW-58", "description": "5/8 in gypsum drywall", "category": "drywall", "unit": "sq_ft", "unit_cost": 0.95, "aliases": ["drywall", "gypsum board", "5/8 drywall", "5/8\" drywall"] },
+    { "sku": "DW-FIN", "description": "Drywall tape and joint compound, Level 4 finish", "category": "drywall", "unit": "sq_ft", "unit_cost": 0.60, "aliases": ["taped and finished", "level 4", "joint compound", "drywall finish"] },
+    { "sku": "INS-SND", "description": "Soundproof fiberglass batt insulation", "category": "insulation", "unit": "sq_ft", "unit_cost": 1.35, "aliases": ["fiberglass insulation", "soundproof insulation", "sound batt"] },
+    { "sku": "CLG-GRID", "description": "2x2 suspended ceiling grid", "category": "ceiling", "unit": "sq_ft", "unit_cost": 1.90, "aliases": ["drop ceiling", "ceiling grid", "suspended ceiling", "2x2 drop ceilings"] },
+    { "sku": "CLG-TILE", "description": "2x2 acoustic ceiling tile", "category": "ceiling", "unit": "sq_ft", "unit_cost": 2.40, "aliases": ["acoustic tile", "ceiling tile", "acoustic tiles"] },
+    { "sku": "DR-INT", "description": "Interior door with frame and hardware", "category": "doors", "unit": "each", "unit_cost": 420.00, "aliases": ["interior door", "door"] },
+    { "sku": "ADA-RR", "description": "ADA restroom fixture set (toilet, lavatory, grab bars)", "category": "plumbing", "unit": "each", "unit_cost": 3800.00, "aliases": ["ada restroom", "ada-compliant restroom", "restroom fixtures"] },
+    { "sku": "RF-TEAR", "description": "Roof membrane tear-off and disposal", "category": "roofing", "unit": "sq_ft", "unit_cost": 1.25, "aliases": ["tear-off", "tear off", "disposal of the old", "epdm removal"] },
+    { "sku": "RF-ISO3", "description": "3 in polyiso rigid insulation board", "category": "roofing", "unit": "sq_ft", "unit_cost": 2.20, "aliases": ["polyiso", "rigid insulation", "insulation board"] },
+    { "sku": "RF-TPO60", "description": "60-mil white TPO membrane, fully adhered, adhesive included", "category": "roofing", "unit": "sq_ft", "unit_cost": 4.50, "aliases": ["tpo", "tpo membrane", "60-mil"] },
+    { "sku": "RF-FLASH", "description": "Aluminum edge flashing", "category": "roofing", "unit": "linear_ft", "unit_cost": 9.00, "aliases": ["edge flashing", "aluminum flashing", "flashing"] },
+    { "sku": "RF-DRAIN", "description": "Cast-iron roof drain", "category": "roofing", "unit": "each", "unit_cost": 650.00, "aliases": ["roof drain", "cast-iron drain", "roof drains"] },
+    { "sku": "CMU-8", "description": "8x8x16 concrete masonry unit", "category": "masonry", "unit": "each", "unit_cost": 3.20, "aliases": ["cmu", "concrete masonry unit", "concrete masonry units", "block", "8x8x16"] },
+    { "sku": "RB-5", "description": "#5 rebar", "category": "reinforcement", "unit": "linear_ft", "unit_cost": 1.10, "aliases": ["#5 rebar", "no. 5 rebar", "#5 bar"] },
+    { "sku": "RB-4", "description": "#4 rebar", "category": "reinforcement", "unit": "linear_ft", "unit_cost": 0.85, "aliases": ["#4 rebar", "no. 4 rebar", "#4 bar"] },
+    { "sku": "GR-FILL", "description": "Grout fill for reinforced cells", "category": "masonry", "unit": "cu_yd", "unit_cost": 190.00, "aliases": ["grout", "grout fill", "solid grout"] },
+    { "sku": "MORTAR", "description": "Mortar, per sq ft of wall", "category": "masonry", "unit": "sq_ft", "unit_cost": 0.55, "aliases": ["mortar"] },
+    { "sku": "CAP-CONC", "description": "Smooth precast concrete wall cap", "category": "masonry", "unit": "linear_ft", "unit_cost": 14.00, "aliases": ["concrete cap", "wall cap", "cap"] },
+    { "sku": "CONC-3500", "description": "3,500 PSI ready-mix concrete", "category": "concrete", "unit": "cu_yd", "unit_cost": 180.00, "aliases": ["concrete", "3,500 psi", "3500 psi", "ready-mix"] },
+    { "sku": "STONE-CR", "description": "Compacted crushed stone base", "category": "concrete", "unit": "cu_yd", "unit_cost": 45.00, "aliases": ["crushed stone", "stone base", "gravel base"] },
+    { "sku": "VB-10", "description": "10-mil polyethylene vapor barrier", "category": "concrete", "unit": "sq_ft", "unit_cost": 0.25, "aliases": ["vapor barrier", "poly vapor barrier", "10-mil poly"] },
+    { "sku": "FORM-EDGE", "description": "Edge formwork for slabs and footings", "category": "concrete", "unit": "linear_ft", "unit_cost": 3.00, "aliases": ["formwork", "edge form", "forms"] }
+  ]
+}
