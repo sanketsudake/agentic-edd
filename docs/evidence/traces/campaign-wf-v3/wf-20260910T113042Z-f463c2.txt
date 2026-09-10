@@ -1,0 +1,17 @@
+RUN wf-20260910T113042Z-f463c2 wf-v3 rfp=rfp-03 client=Supply Yard LLC agents=a1-rfp-extractor@v5,a2-pricing-analyst@v1,a3-risk-assessor@v2,a4-proposal-writer@v2,a5-adversarial-reviewer@v4
+  a1-rfp-extractor#1 v5 swe-1-6 a1 OK parents=- prompt=20526 completion=1281 cached=13216 cost_usd=0.009501 ms=35832
+    G1 PASS
+    G2 PASS redactions=0
+    G3 PASS
+  BRANCH ESTIMATE (default)
+  a3-risk-assessor#3 v2 swe-1-6 a1 OK parents=a1-rfp-extractor#1 prompt=20433 completion=581 cached=13312 cost_usd=0.007675 ms=10795
+    G1 PASS
+  a2-pricing-analyst#2 v1 swe-1-6 a1 OK parents=a1-rfp-extractor#1 prompt=22353 completion=1393 cached=13312 cost_usd=0.010665 ms=17416
+    G1 PASS
+  FINANCIALS materials=16602 labor=9961.2 overhead=3984.48 contingency=2656.32 final_bid=33204 rate=0.1
+  GATE unpriced-material FAIL ["smooth concrete cap"]
+  GATE risk-flag PASS
+  GATE bid-threshold PASS
+  PUNCH_OUT a2-pricing-analyst#2 (unpriced-material, after-gates): Gate unpriced-material hit (["smooth concrete cap"]) on the RFP from Supply Yard LLC; final bid 33204. Approve, edit the prices or the rate, or decline?
+END status=WAITING_HUMAN route=PUNCH_OUT
+TOTAL prompt=63312 completion=3255 cached=39840 cost_usd=0.027841

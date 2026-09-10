@@ -1,0 +1,31 @@
+RUN wf-20260910T075707Z-320ba5 wf-v1 rfp=rfp-02 client=Bayline Logistics agents=a1-rfp-extractor@v2,a2-pricing-analyst@v1,a3-risk-assessor@v1,a4-proposal-writer@v1,a5-adversarial-reviewer@v1
+  a1-rfp-extractor#1 v2 swe-1-6 a1 OK parents=- prompt=20350 completion=810 cached=13216 cost_usd=0.008235 ms=11530
+    G1 PASS
+    G2 PASS redactions=0
+    G3 PASS
+  BRANCH ESTIMATE (default)
+  a3-risk-assessor#3 v1 swe-1-6 a1 RETRY parents=a1-rfp-extractor#1 prompt=20357 completion=696 cached=13312 cost_usd=0.007925 ms=11354 problem=parse: invalid JSON: Expected ',' or '}' after property value in JSON at position 146 (line 6 column 48)
+    G1 FAIL parse: invalid JSON: Expected ',' or '}' after property value in JSON at position 146 (line 6 column 48)
+  a2-pricing-analyst#2 v1 swe-1-6 a1 OK parents=a1-rfp-extractor#1 prompt=22343 completion=980 cached=13312 cost_usd=0.009628 ms=12485
+    G1 PASS
+  a3-risk-assessor#3 v1 swe-1-6 a2 OK parents=a1-rfp-extractor#1 prompt=20362 completion=835 cached=13952 cost_usd=0.008083 ms=11236
+    G1 PASS
+  FINANCIALS materials=85700 labor=51420 overhead=20568 contingency=24681.6 final_bid=182369.6 rate=0.18
+  GATE unpriced-material PASS
+  GATE risk-flag PASS
+  GATE bid-threshold PASS
+  a4-proposal-writer#4 v1 swe-1-6 a1 OK parents=a2-pricing-analyst#2,a3-risk-assessor#3 prompt=20776 completion=1088 cached=13312 cost_usd=0.009114 ms=22436
+    G1 PASS
+  a5-adversarial-reviewer#5 v1 swe-1-6 a1 OK parents=a4-proposal-writer#4 prompt=21448 completion=951 cached=13312 cost_usd=0.009108 ms=13465
+    G1 PASS
+    G5 PASS
+  REVIEW round=1 REVISE findings=number_mismatch,number_mismatch
+    G4 PASS revise 1 of 2
+  a4-proposal-writer#6 v1 swe-1-6 a1 RETRY parents=a5-adversarial-reviewer#5 prompt=20919 completion=1538 cached=14272 cost_usd=0.010023 ms=16082 problem=check: math: overhead: 7713 != 20568; contingency: 26069.94 != 24681.6; final_bid: 170902.94 != 182369.6
+    G1 FAIL check: math: overhead: 7713 != 20568; contingency: 26069.94 != 24681.6; final_bid: 170902.94 != 182369.6
+  a4-proposal-writer#6 v1 swe-1-6 a2 RETRY parents=a5-adversarial-reviewer#5 prompt=20918 completion=1206 cached=14496 cost_usd=0.009125 ms=13032 problem=check: math: overhead: 7713 != 20568; contingency: 27980.4 != 24681.6; final_bid: 172813.4 != 182369.6
+    G1 FAIL check: math: overhead: 7713 != 20568; contingency: 27980.4 != 24681.6; final_bid: 172813.4 != 182369.6
+  a4-proposal-writer#6 v1 swe-1-6 a3 RETRY parents=a5-adversarial-reviewer#5 prompt=20919 completion=1278 cached=14496 cost_usd=0.009306 ms=17173 problem=check: math: overhead: 7713 != 20568; contingency: 26069.94 != 24681.6; final_bid: 170902.94 != 182369.6
+    G1 FAIL check: math: overhead: 7713 != 20568; contingency: 26069.94 != 24681.6; final_bid: 170902.94 != 182369.6
+END status=FAILED_MATH route=null failed_step=a4-proposal-writer#6
+TOTAL prompt=188392 completion=9382 cached=123680 cost_usd=0.080547

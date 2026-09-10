@@ -1,0 +1,207 @@
+{
+  "run_id": "wf-20260910T110424Z-4b59e3",
+  "workflow_version": "wf-v1",
+  "stage": "after-gates",
+  "rule": "bid-threshold",
+  "human_question": "Gate bid-threshold hit (275945.28) on the RFP from Annex Holdings; final bid 275945.28. Approve, edit the prices or the rate, or decline?",
+  "input": {
+    "id": "rfp-10",
+    "client": "Annex Holdings",
+    "rfp_text": "RFP for a 4,000 sq ft flat roof replacement on our office annex. Tear off and dispose of the old EPDM membrane, install 3 inches of rigid polyiso insulation board, then install standing-seam copper roofing panels over the full area with matching copper edge flashing. Replace 2 cast-iron roof drains."
+  },
+  "extraction": {
+    "scope_summary": "Replace 4,000 sq ft flat roof on office annex by removing existing EPDM membrane and installing new insulation and copper roofing system. Work includes tear-off, disposal, insulation installation, standing-seam copper panels, edge flashing, and roof drain replacement.",
+    "is_construction": true,
+    "bom": [
+      {
+        "category": "Roofing",
+        "description": "EPDM membrane tear-off and disposal",
+        "quantity": 4000,
+        "unit": "sq_ft",
+        "source": "stated",
+        "basis": "4,000 sq ft flat roof replacement"
+      },
+      {
+        "category": "Insulation",
+        "description": "Rigid polyiso insulation board 3 inches thick",
+        "quantity": 4000,
+        "unit": "sq_ft",
+        "source": "derived",
+        "basis": "4,000 sq ft roof area"
+      },
+      {
+        "category": "Roofing",
+        "description": "Standing-seam copper roofing panels",
+        "quantity": 4000,
+        "unit": "sq_ft",
+        "source": "derived",
+        "basis": "4,000 sq ft roof area"
+      },
+      {
+        "category": "Flashing",
+        "description": "Copper edge flashing",
+        "quantity": 253,
+        "unit": "linear_ft",
+        "source": "derived",
+        "basis": "4,000 sq ft area assumed as 63.25 ft x 63.25 ft square, perimeter = 4 x 63.25 ft = 253 ft"
+      },
+      {
+        "category": "Roof Drains",
+        "description": "Cast-iron roof drains",
+        "quantity": 2,
+        "unit": "each",
+        "source": "stated",
+        "basis": "Replace 2 cast-iron roof drains"
+      }
+    ],
+    "special_requirements": [
+      "Standing-seam copper roofing system",
+      "Copper edge flashing must match roofing panels",
+      "Cast-iron roof drain replacement"
+    ],
+    "missing_quantities": []
+  },
+  "outputs": {
+    "a1": {
+      "scope_summary": "Replace 4,000 sq ft flat roof on office annex by removing existing EPDM membrane and installing new insulation and copper roofing system. Work includes tear-off, disposal, insulation installation, standing-seam copper panels, edge flashing, and roof drain replacement.",
+      "is_construction": true,
+      "bom": [
+        {
+          "category": "Roofing",
+          "description": "EPDM membrane tear-off and disposal",
+          "quantity": 4000,
+          "unit": "sq_ft",
+          "source": "stated",
+          "basis": "4,000 sq ft flat roof replacement"
+        },
+        {
+          "category": "Insulation",
+          "description": "Rigid polyiso insulation board 3 inches thick",
+          "quantity": 4000,
+          "unit": "sq_ft",
+          "source": "derived",
+          "basis": "4,000 sq ft roof area"
+        },
+        {
+          "category": "Roofing",
+          "description": "Standing-seam copper roofing panels",
+          "quantity": 4000,
+          "unit": "sq_ft",
+          "source": "derived",
+          "basis": "4,000 sq ft roof area"
+        },
+        {
+          "category": "Flashing",
+          "description": "Copper edge flashing",
+          "quantity": 253,
+          "unit": "linear_ft",
+          "source": "derived",
+          "basis": "4,000 sq ft area assumed as 63.25 ft x 63.25 ft square, perimeter = 4 x 63.25 ft = 253 ft"
+        },
+        {
+          "category": "Roof Drains",
+          "description": "Cast-iron roof drains",
+          "quantity": 2,
+          "unit": "each",
+          "source": "stated",
+          "basis": "Replace 2 cast-iron roof drains"
+        }
+      ],
+      "special_requirements": [
+        "Standing-seam copper roofing system",
+        "Copper edge flashing must match roofing panels",
+        "Cast-iron roof drain replacement"
+      ],
+      "missing_quantities": []
+    },
+    "a2": {
+      "lines": [
+        {
+          "description": "EPDM membrane tear-off and disposal",
+          "sku": "RF-TEAR",
+          "quantity": 4000,
+          "unit": "sq_ft",
+          "unit_cost": 1.25,
+          "line_total": 5000,
+          "conversion": null
+        },
+        {
+          "description": "Rigid polyiso insulation board 3 inches thick",
+          "sku": "RF-ISO3",
+          "quantity": 4000,
+          "unit": "sq_ft",
+          "unit_cost": 2.2,
+          "line_total": 8800,
+          "conversion": null
+        },
+        {
+          "description": "Cast-iron roof drains",
+          "sku": "RF-DRAIN",
+          "quantity": 2,
+          "unit": "each",
+          "unit_cost": 650,
+          "line_total": 1300,
+          "conversion": null
+        },
+        {
+          "description": "Standing-seam copper roofing panels",
+          "sku": "HUMAN",
+          "quantity": 4000,
+          "unit": "sq_ft",
+          "unit_cost": 28,
+          "line_total": 112000,
+          "conversion": null
+        },
+        {
+          "description": "Copper edge flashing",
+          "sku": "HUMAN",
+          "quantity": 253,
+          "unit": "linear_ft",
+          "unit_cost": 22,
+          "line_total": 5566,
+          "conversion": null
+        }
+      ],
+      "total_material_cost": 132666,
+      "unpriced": []
+    },
+    "a3": {
+      "risk_factors": [
+        {
+          "factor": "Copper roofing system complexity",
+          "severity": "medium",
+          "evidence": "Standing-seam copper roofing system"
+        },
+        {
+          "factor": "Cast-iron drain replacement",
+          "severity": "low",
+          "evidence": "Replace 2 cast-iron roof drains"
+        }
+      ],
+      "contingency_rate": 0.15,
+      "contingency_reason": "Medium severity factor due to copper roofing system complexity requiring specialized installation and precise edge flashing matching",
+      "flags": []
+    }
+  },
+  "financials": {
+    "materials": 132666,
+    "labor": 79599.6,
+    "overhead": 31839.84,
+    "contingency": 31839.84,
+    "final_bid": 275945.28,
+    "rates": {
+      "labor": 0.6,
+      "overhead": 0.15,
+      "contingency": 0.15
+    }
+  },
+  "decision": {
+    "action": "approve",
+    "note": "Exposure above 250k approved by the commercial director.",
+    "rfp_text": null,
+    "unit_costs": {},
+    "contingency_rate": null,
+    "reply": null
+  },
+  "how_to": "Set decision.action to \"approve\", \"edit\", or \"reject\". For edit: after-a1 needs rfp_text; after-gates takes unit_costs {description: usd} and/or contingency_rate; after-review takes reply (the final proposal markdown). Then run: node harness/resume.js wf-20260910T110424Z-4b59e3"
+}

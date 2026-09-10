@@ -1,0 +1,9 @@
+RUN wf-20260910T111825Z-6d716b wf-v3 rfp=rfp-06 client=Harbor Point Offices agents=a1-rfp-extractor@v5,a2-pricing-analyst@v1,a3-risk-assessor@v2,a4-proposal-writer@v2,a5-adversarial-reviewer@v4
+  a1-rfp-extractor#1 v5 swe-1-6 a1 OK parents=- prompt=20514 completion=1038 cached=13216 cost_usd=0.008887 ms=24520
+    G1 PASS
+    G2 PASS redactions=0
+    G3 FAIL asbestos
+  BRANCH PUNCH_OUT (G3) "asbestos"
+  PUNCH_OUT a1-rfp-extractor#1 (G3, after-a1): The RFP from Harbor Point Offices hit the hard rule "asbestos". Edit the RFP text, or decline?
+END status=WAITING_HUMAN route=PUNCH_OUT
+TOTAL prompt=20514 completion=1038 cached=13216 cost_usd=0.008887

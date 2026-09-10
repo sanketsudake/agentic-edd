@@ -1,0 +1,17 @@
+RUN wf-20260910T114340Z-d69e45 wf-v3 rfp=rfp-10 client=Annex Holdings agents=a1-rfp-extractor@v5,a2-pricing-analyst@v1,a3-risk-assessor@v2,a4-proposal-writer@v2,a5-adversarial-reviewer@v4
+  a1-rfp-extractor#1 v5 swe-1-6 a1 OK parents=- prompt=20489 completion=1152 cached=13216 cost_usd=0.00916 ms=23388
+    G1 PASS
+    G2 PASS redactions=0
+    G3 PASS
+  BRANCH ESTIMATE (default)
+  a3-risk-assessor#3 v2 swe-1-6 a1 OK parents=a1-rfp-extractor#1 prompt=20359 completion=667 cached=13312 cost_usd=0.007853 ms=12317
+    G1 PASS
+  a2-pricing-analyst#2 v1 swe-1-6 a1 OK parents=a1-rfp-extractor#1 prompt=22354 completion=771 cached=13312 cost_usd=0.009111 ms=12631
+    G1 PASS
+  FINANCIALS materials=15100 labor=9060 overhead=3624 contingency=2899.2 final_bid=30683.2 rate=0.12
+  GATE unpriced-material FAIL ["standing-seam copper roofing panels","copper edge flashing"]
+  GATE risk-flag PASS
+  GATE bid-threshold PASS
+  PUNCH_OUT a2-pricing-analyst#2 (unpriced-material, after-gates): Gate unpriced-material hit (["standing-seam copper roofing panels","copper edge flashing"]) on the RFP from Annex Holdings; final bid 30683.2. Approve, edit the prices or the rate, or decline?
+END status=WAITING_HUMAN route=PUNCH_OUT
+TOTAL prompt=63202 completion=2590 cached=39840 cost_usd=0.026124

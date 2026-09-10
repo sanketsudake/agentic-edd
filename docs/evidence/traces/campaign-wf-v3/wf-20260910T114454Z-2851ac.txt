@@ -1,0 +1,29 @@
+RUN wf-20260910T114454Z-2851ac wf-v3 rfp=rfp-12 client=Bayline Logistics agents=a1-rfp-extractor@v5,a2-pricing-analyst@v1,a3-risk-assessor@v2,a4-proposal-writer@v2,a5-adversarial-reviewer@v4
+  a1-rfp-extractor#1 v5 swe-1-6 a1 OK parents=- prompt=20478 completion=495 cached=13216 cost_usd=0.007512 ms=9758
+    G1 PASS
+    G2 PASS redactions=0
+    G3 PASS
+  BRANCH ESTIMATE (default)
+  a2-pricing-analyst#2 v1 swe-1-6 a1 OK parents=a1-rfp-extractor#1 prompt=22145 completion=422 cached=13312 cost_usd=0.008134 ms=19198
+    G1 PASS
+  a3-risk-assessor#3 v2 swe-1-6 a1 OK parents=a1-rfp-extractor#1 prompt=20306 completion=699 cached=13312 cost_usd=0.007907 ms=21940
+    G1 PASS
+  FINANCIALS materials=2380 labor=1428 overhead=571.2 contingency=380.8 final_bid=4760 rate=0.1
+  GATE unpriced-material PASS
+  GATE risk-flag PASS
+  GATE bid-threshold PASS
+  a4-proposal-writer#4 v2 swe-1-6 a1 OK parents=a2-pricing-analyst#2,a3-risk-assessor#3 prompt=20528 completion=1137 cached=13312 cost_usd=0.009113 ms=18694
+    G1 PASS
+  a5-adversarial-reviewer#5 v4 kimi-k3-low a1 OK parents=a4-proposal-writer#4 prompt=20109 completion=204 cached=10752 cost_usd=0.034357 ms=6793
+    G1 PASS
+    G5 PASS
+  REVIEW round=1 REVISE findings=unfit_exclusion
+    G4 PASS revise 1 of 2
+  a4-proposal-writer#6 v2 swe-1-6 a1 OK parents=a5-adversarial-reviewer#5 prompt=20596 completion=977 cached=14016 cost_usd=0.008536 ms=15538
+    G1 PASS
+  a5-adversarial-reviewer#7 v4 kimi-k3-low a1 OK parents=a4-proposal-writer#6 prompt=20167 completion=83 cached=10752 cost_usd=0.032716 ms=6787
+    G1 PASS
+    G5 PASS
+  REVIEW round=2 APPROVE
+END status=DONE route=BID
+TOTAL prompt=144329 completion=4017 cached=88672 cost_usd=0.108275

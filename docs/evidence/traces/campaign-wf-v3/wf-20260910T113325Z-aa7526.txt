@@ -1,0 +1,17 @@
+RUN wf-20260910T113325Z-aa7526 wf-v3 rfp=rfp-07 client=Continental Distribution agents=a1-rfp-extractor@v5,a2-pricing-analyst@v1,a3-risk-assessor@v2,a4-proposal-writer@v2,a5-adversarial-reviewer@v4
+  a1-rfp-extractor#1 v5 swe-1-6 a1 OK parents=- prompt=20511 completion=1143 cached=13216 cost_usd=0.009148 ms=14658
+    G1 PASS
+    G2 PASS redactions=0
+    G3 PASS
+  BRANCH ESTIMATE (default)
+  a3-risk-assessor#3 v2 swe-1-6 a1 OK parents=a1-rfp-extractor#1 prompt=20406 completion=653 cached=13312 cost_usd=0.007842 ms=11285
+    G1 PASS
+  a2-pricing-analyst#2 v1 swe-1-6 a1 OK parents=a1-rfp-extractor#1 prompt=22457 completion=863 cached=13312 cost_usd=0.009392 ms=12236
+    G1 PASS
+  FINANCIALS materials=429626.95 labor=257776.17 overhead=103110.47 contingency=82488.37 final_bid=873001.96 rate=0.12
+  GATE unpriced-material PASS
+  GATE risk-flag PASS
+  GATE bid-threshold FAIL 873001.96
+  PUNCH_OUT a2-pricing-analyst#2 (bid-threshold, after-gates): Gate bid-threshold hit (873001.96) on the RFP from Continental Distribution; final bid 873001.96. Approve, edit the prices or the rate, or decline?
+END status=WAITING_HUMAN route=PUNCH_OUT
+TOTAL prompt=63374 completion=2659 cached=39840 cost_usd=0.026382

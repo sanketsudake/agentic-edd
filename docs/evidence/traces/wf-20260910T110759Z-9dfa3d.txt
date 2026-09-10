@@ -1,0 +1,12 @@
+RUN wf-20260910T110759Z-9dfa3d wf-v1 rfp=rfp-11 client=Prefab Steel Storage Co agents=a1-rfp-extractor@v2,a2-pricing-analyst@v1,a3-risk-assessor@v2,a4-proposal-writer@v2,a5-adversarial-reviewer@v4
+  a1-rfp-extractor#1 v2 swe-1-6 a1 OK parents=- prompt=20359 completion=1075 cached=13216 cost_usd=0.008902 ms=31247
+    G1 PASS
+    G2 PASS redactions=0
+    G3 FAIL liquidated damages
+  BRANCH PUNCH_OUT (G3) "liquidated damages"
+  PUNCH_OUT a1-rfp-extractor#1 (G3, after-a1): The RFP from Prefab Steel Storage Co hit the hard rule "liquidated damages". Edit the RFP text, or decline?
+END status=WAITING_HUMAN route=PUNCH_OUT
+TOTAL prompt=20359 completion=1075 cached=13216 cost_usd=0.008902
+  HUMAN human-decision#2 reject stage=after-a1 rule=G3 note="We do not accept liquidated damages or an unlimited indemnity on a slab of this size." cost_usd=0
+END status=DONE route=DECLINED
+TOTAL prompt=20359 completion=1075 cached=13216 cost_usd=0.008902

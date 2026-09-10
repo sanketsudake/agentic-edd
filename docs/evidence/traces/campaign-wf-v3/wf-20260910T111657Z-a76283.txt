@@ -1,0 +1,22 @@
+RUN wf-20260910T111657Z-a76283 wf-v3 rfp=rfp-04 client=Prefab Steel Storage Co agents=a1-rfp-extractor@v5,a2-pricing-analyst@v1,a3-risk-assessor@v2,a4-proposal-writer@v2,a5-adversarial-reviewer@v4
+  a1-rfp-extractor#1 v5 swe-1-6 a1 OK parents=- prompt=20540 completion=2521 cached=13216 cost_usd=0.012608 ms=43474
+    G1 PASS
+    G2 PASS redactions=0
+    G3 PASS
+  BRANCH ESTIMATE (default)
+  a3-risk-assessor#3 v2 swe-1-6 a1 OK parents=a1-rfp-extractor#1 prompt=20424 completion=530 cached=13312 cost_usd=0.007543 ms=10317
+    G1 PASS
+  a2-pricing-analyst#2 v1 swe-1-6 a1 OK parents=a1-rfp-extractor#1 prompt=22456 completion=713 cached=13312 cost_usd=0.009017 ms=11244
+    G1 PASS
+  FINANCIALS materials=13986.35 labor=8391.81 overhead=3356.72 contingency=2237.82 final_bid=27972.7 rate=0.1
+  GATE unpriced-material PASS
+  GATE risk-flag PASS
+  GATE bid-threshold PASS
+  a4-proposal-writer#4 v2 swe-1-6 a1 OK parents=a2-pricing-analyst#2,a3-risk-assessor#3 prompt=20803 completion=1812 cached=13312 cost_usd=0.010938 ms=25357
+    G1 PASS
+  a5-adversarial-reviewer#5 v4 kimi-k3-low a1 OK parents=a4-proposal-writer#4 prompt=20644 completion=122 cached=10752 cost_usd=0.034732 ms=6300
+    G1 PASS
+    G5 PASS
+  REVIEW round=1 APPROVE
+END status=DONE route=BID
+TOTAL prompt=104867 completion=5698 cached=63904 cost_usd=0.074838

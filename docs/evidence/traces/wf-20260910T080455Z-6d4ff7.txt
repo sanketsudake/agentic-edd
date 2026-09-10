@@ -1,0 +1,22 @@
+RUN wf-20260910T080455Z-6d4ff7 wf-v1 rfp=rfp-04 client=Prefab Steel Storage Co agents=a1-rfp-extractor@v2,a2-pricing-analyst@v1,a3-risk-assessor@v1,a4-proposal-writer@v2,a5-adversarial-reviewer@v3
+  a1-rfp-extractor#1 v2 swe-1-6 a1 OK parents=- prompt=20370 completion=1350 cached=13216 cost_usd=0.009595 ms=14431
+    G1 PASS
+    G2 PASS redactions=0
+    G3 PASS
+  BRANCH ESTIMATE (default)
+  a3-risk-assessor#3 v1 swe-1-6 a1 OK parents=a1-rfp-extractor#1 prompt=20368 completion=594 cached=13312 cost_usd=0.007675 ms=9731
+    G1 PASS
+  a2-pricing-analyst#2 v1 swe-1-6 a1 OK parents=a1-rfp-extractor#1 prompt=22525 completion=929 cached=13312 cost_usd=0.009591 ms=12741
+    G1 PASS
+  FINANCIALS materials=14210.85 labor=8526.51 overhead=3410.6 contingency=2273.74 final_bid=28421.7 rate=0.1
+  GATE unpriced-material PASS
+  GATE risk-flag PASS
+  GATE bid-threshold PASS
+  a4-proposal-writer#4 v2 swe-1-6 a1 OK parents=a2-pricing-analyst#2,a3-risk-assessor#3 prompt=20811 completion=1236 cached=13312 cost_usd=0.009502 ms=13029
+    G1 PASS
+  a5-adversarial-reviewer#5 v3 swe-1-6 a1 OK parents=a4-proposal-writer#4 prompt=21470 completion=857 cached=13312 cost_usd=0.008884 ms=29912
+    G1 PASS
+    G5 FAIL verdict REVISE -> APPROVE; dropped 1 unfounded number_mismatch finding(s) (proposal passed G9); 0 kept
+  REVIEW round=1 APPROVE
+END status=DONE route=BID
+TOTAL prompt=105544 completion=4966 cached=66464 cost_usd=0.045247

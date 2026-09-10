@@ -1,0 +1,8 @@
+RUN wf-20260910T114331Z-dfa57b wf-v3 rfp=rfp-09 client=Northside Dental Partners agents=a1-rfp-extractor@v5,a2-pricing-analyst@v1,a3-risk-assessor@v2,a4-proposal-writer@v2,a5-adversarial-reviewer@v4
+  a1-rfp-extractor#1 v5 swe-1-6 a1 OK parents=- prompt=20467 completion=544 cached=13216 cost_usd=0.007629 ms=8935
+    G1 PASS
+    G2 PASS redactions=0
+    G3 PASS
+  BRANCH NO_BID (not-construction)
+END status=DONE route=NO_BID
+TOTAL prompt=20467 completion=544 cached=13216 cost_usd=0.007629

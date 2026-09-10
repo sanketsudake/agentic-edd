@@ -1,0 +1,38 @@
+RUN wf-20260910T110424Z-4b59e3 wf-v1 rfp=rfp-10 client=Annex Holdings agents=a1-rfp-extractor@v2,a2-pricing-analyst@v1,a3-risk-assessor@v2,a4-proposal-writer@v2,a5-adversarial-reviewer@v3
+  a1-rfp-extractor#1 v2 swe-1-6 a1 OK parents=- prompt=20324 completion=1021 cached=13216 cost_usd=0.00875 ms=23242
+    G1 PASS
+    G2 PASS redactions=0
+    G3 PASS
+  BRANCH ESTIMATE (default)
+  a2-pricing-analyst#2 v1 swe-1-6 a1 OK parents=a1-rfp-extractor#1 prompt=22355 completion=875 cached=13312 cost_usd=0.009371 ms=18974
+    G1 PASS
+  a3-risk-assessor#3 v2 swe-1-6 a1 OK parents=a1-rfp-extractor#1 prompt=20384 completion=943 cached=13312 cost_usd=0.008556 ms=21030
+    G1 PASS
+  FINANCIALS materials=15100 labor=9060 overhead=3624 contingency=2899.2 final_bid=30683.2 rate=0.12
+  GATE unpriced-material FAIL ["Standing-seam copper roofing panels","Copper edge flashing"]
+  GATE risk-flag PASS
+  GATE bid-threshold PASS
+  PUNCH_OUT a2-pricing-analyst#2 (unpriced-material, after-gates): Gate unpriced-material hit (["Standing-seam copper roofing panels","Copper edge flashing"]) on the RFP from Annex Holdings; final bid 30683.2. Approve, edit the prices or the rate, or decline?
+END status=WAITING_HUMAN route=PUNCH_OUT
+TOTAL prompt=63063 completion=2839 cached=39840 cost_usd=0.026677
+  HUMAN human-decision#4 edit stage=after-gates rule=unpriced-material note="Copper priced from the supplier quote of 2026-09-08; rate raised for the copper lead time." edits=[{"line":"Standing-seam copper roofing panels","from":null,"to":28,"priced_by_human":true},{"line":"Copper edge flashing","from":null,"to":22,"priced_by_human":true},{"contingency_rate":{"from":0.12,"to":0.15}}] cost_usd=0
+  FINANCIALS materials=132666 labor=79599.6 overhead=31839.84 contingency=31839.84 final_bid=275945.28 rate=0.15
+  GATE unpriced-material PASS
+  GATE risk-flag PASS
+  GATE bid-threshold FAIL 275945.28
+  PUNCH_OUT human-decision#4 (bid-threshold, after-gates): Gate bid-threshold hit (275945.28) on the RFP from Annex Holdings; final bid 275945.28. Approve, edit the prices or the rate, or decline?
+END status=WAITING_HUMAN route=PUNCH_OUT
+TOTAL prompt=63063 completion=2839 cached=39840 cost_usd=0.026677
+  HUMAN human-decision#4 approve stage=after-gates rule=bid-threshold note="Exposure above 250k approved by the commercial director." cost_usd=0
+  FINANCIALS materials=132666 labor=79599.6 overhead=31839.84 contingency=31839.84 final_bid=275945.28 rate=0.15
+  GATE unpriced-material PASS
+  GATE risk-flag PASS
+  GATE bid-threshold ACCEPTED 275945.28
+  a4-proposal-writer#5 v2 swe-1-6 a1 OK parents=human-decision#4 prompt=20795 completion=1696 cached=13312 cost_usd=0.010644 ms=47708
+    G1 PASS
+  a5-adversarial-reviewer#6 v3 swe-1-6 a1 OK parents=a4-proposal-writer#5 prompt=21498 completion=714 cached=13312 cost_usd=0.00854 ms=16060
+    G1 PASS
+    G5 PASS
+  REVIEW round=1 APPROVE
+END status=DONE route=BID
+TOTAL prompt=105356 completion=5249 cached=66464 cost_usd=0.045861

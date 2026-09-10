@@ -1,0 +1,10 @@
+RUN wf-20260910T113239Z-dcc68f wf-v3 rfp=rfp-05 client=Eastgate Warehousing agents=a1-rfp-extractor@v5,a2-pricing-analyst@v1,a3-risk-assessor@v2,a4-proposal-writer@v2,a5-adversarial-reviewer@v4
+  a1-rfp-extractor#1 v5 swe-1-6 a1 RETRY parents=- prompt=20475 completion=852 cached=13216 cost_usd=0.008403 ms=19331 problem=schema: /bom/0/unit must be equal to one of the allowed values
+    G1 FAIL schema: /bom/0/unit must be equal to one of the allowed values
+  a1-rfp-extractor#1 v5 swe-1-6 a2 OK parents=- prompt=20480 completion=652 cached=14048 cost_usd=0.007656 ms=11301
+    G1 PASS
+    G2 PASS redactions=0
+    G3 PASS
+  BRANCH NEEDS_INFO (missing-quantities) ["wall length","wall height"]
+END status=DONE route=NEEDS_INFO
+TOTAL prompt=40955 completion=1504 cached=27264 cost_usd=0.016059

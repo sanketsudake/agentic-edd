@@ -1,0 +1,31 @@
+RUN wf-20260910T111657Z-85166d wf-v3 rfp=rfp-01 client=Northside Dental Partners agents=a1-rfp-extractor@v5,a2-pricing-analyst@v1,a3-risk-assessor@v2,a4-proposal-writer@v2,a5-adversarial-reviewer@v4
+  a1-rfp-extractor#1 v5 swe-1-6 a1 OK parents=- prompt=20539 completion=1024 cached=13216 cost_usd=0.008865 ms=25370
+    G1 PASS
+    G2 PASS redactions=0
+    G3 PASS
+  BRANCH ESTIMATE (default)
+  a3-risk-assessor#3 v2 swe-1-6 a1 OK parents=a1-rfp-extractor#1 prompt=20451 completion=701 cached=13312 cost_usd=0.007984 ms=17152
+    G1 PASS
+  a2-pricing-analyst#2 v1 swe-1-6 a1 RETRY parents=a1-rfp-extractor#1 prompt=22497 completion=1222 cached=13312 cost_usd=0.01031 ms=25716 problem=check: math: total_material_cost 20485 != sum 24485
+    G1 FAIL check: math: total_material_cost 20485 != sum 24485
+  a2-pricing-analyst#2 v1 swe-1-6 a2 OK parents=a1-rfp-extractor#1 prompt=22493 completion=1233 cached=16064 cost_usd=0.00951 ms=20628
+    G1 PASS
+  FINANCIALS materials=24485 labor=14691 overhead=5876.4 contingency=4701.12 final_bid=49753.52 rate=0.12
+  GATE unpriced-material PASS
+  GATE risk-flag PASS
+  GATE bid-threshold PASS
+  a4-proposal-writer#4 v2 swe-1-6 a1 OK parents=a2-pricing-analyst#2,a3-risk-assessor#3 prompt=20968 completion=1160 cached=13312 cost_usd=0.00939 ms=15298
+    G1 PASS
+  a5-adversarial-reviewer#5 v4 kimi-k3-low a1 OK parents=a4-proposal-writer#4 prompt=20855 completion=213 cached=10752 cost_usd=0.03673 ms=6825
+    G1 PASS
+    G5 PASS
+  REVIEW round=1 REVISE findings=unfit_exclusion
+    G4 PASS revise 1 of 2
+  a4-proposal-writer#6 v2 swe-1-6 a1 OK parents=a5-adversarial-reviewer#5 prompt=21036 completion=1168 cached=14464 cost_usd=0.009099 ms=20769
+    G1 PASS
+  a5-adversarial-reviewer#7 v4 kimi-k3-low a1 OK parents=a4-proposal-writer#6 prompt=20883 completion=161 cached=0 cost_usd=0.065064 ms=6868
+    G1 PASS
+    G5 PASS
+  REVIEW round=2 APPROVE
+END status=DONE route=BID
+TOTAL prompt=169722 completion=6882 cached=94432 cost_usd=0.156952
