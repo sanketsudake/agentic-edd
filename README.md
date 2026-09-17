@@ -62,3 +62,7 @@ Model calls go through the Devin CLI. Every call's tokens and cost land in `logs
 | `docs/` | One page per topic, plus the evidence (audit logs, traces, proposals) |
 
 Read next: `DESIGN.md` (why it is built this way), then `docs/`.
+
+## License
+
+MIT. See `LICENSE`.

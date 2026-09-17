@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "Bid pipeline: a construction RFP in, a priced and reviewed proposal out, from five evaluated prompts with code-enforced math and guardrails",
+  "license": "MIT",
   "scripts": {
     "test": "node --test \"test/**/*.test.js\"",
     "eval": "bash scripts/eval-agent.sh",
